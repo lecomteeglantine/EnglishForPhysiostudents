@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="Clinical English for physiotherapy students: vocabulary, grammar, pronunciation, practice, diagnostic and clinical communication.">
+  <title>Physiotherapy English</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="brand-wrap">
+      <img class="brand-logo" src="assets/logo.svg" alt="" width="54" height="54">
+      <div>
+        <h1>Physiotherapy English</h1>
+        <p>Clinical English for physiotherapy students</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="status-dot" aria-label="Site available">● Online</span>
+      <button class="ghost" id="installBtn" hidden>📲 Install app</button>
+      <button class="ghost" id="accessibilityToggle" aria-expanded="false" aria-controls="accessibilityPanel">⚙ Accessibility</button>
+    </div>
+  </header>
+
+  <section class="accessibility-panel" id="accessibilityPanel" hidden>
+    <button data-access="fontDown">A−</button>
+    <button data-access="fontUp">A+</button>
+    <button data-access="dark">Dark mode</button>
+    <button data-access="contrast">High contrast</button>
+    <button data-access="simple">Simple layout</button>
+    <button data-access="motion">Reduce motion</button>
+  </section>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <button class="nav-item active" data-view="home">⌂ Home</button>
+    <details>
+      <summary>📚 Learn</summary>
+      <div class="nav-menu">
+        <button data-view="vocabulary">🦴 Vocabulary <small>Terms, sound, definitions & French</small></button>
+        <button data-view="dictionary">🔎 Dictionary <small>Look up a term fast</small></button>
+        <button data-view="grammar">🧩 Grammar <small>Lesson + video + recap quiz</small></button>
+        <button data-view="pronunciation">🎧 Pronunciation <small>Stress, sounds and clinical words</small></button>
+      </div>
+    </details>
+    <details>
+      <summary>⚡ Practise</summary>
+      <div class="nav-menu">
+        <button data-view="flashcards">🧠 Flashcards <small>Revise and rate recall</small></button>
+        <button data-view="practice">⚡ Practice <small>Quick game modes</small></button>
+        <button data-view="diagnostic">📊 Diagnostic <small>Whole-site revision check</small></button>
+      </div>
+    </details>
+    <details>
+      <summary>🩺 Clinical</summary>
+      <div class="nav-menu">
+        <button data-view="cases">🩺 Clinical cases <small>Apply language to patients</small></button>
+        <button data-view="communication">💬 Communication lab <small>Assess, explain, hand over, instruct</small></button>
+      </div>
+    </details>
+    <details>
+      <summary>♥ My learning <span id="savedCountNav">0</span></summary>
+      <div class="nav-menu">
+        <button data-view="myvocab">♥ My vocabulary <small>Saved words</small></button>
+        <button data-view="progress">📈 My progress <small>Results and next steps</small></button>
+      </div>
+    </details>
+  </nav>
+
+  <main id="main">
+    <section class="view active" id="view-home" data-view-panel="home">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">MOVE · ASSESS · EXPLAIN</p>
+          <h2>Clinical English.<br><span>Built for physiotherapy.</span></h2>
+          <p class="lead">Revise anatomy and clinical vocabulary, strengthen the grammar you need with patients, hear every key term, and use a diagnostic test to decide what to revise next.</p>
+          <div class="hero-actions">
+            <button class="primary" data-view="diagnostic">📊 Take the diagnostic</button>
+            <button class="secondary" data-view="vocabulary">🦴 Explore vocabulary</button>
+            <button class="secondary" id="fiveWordsBtn">✨ Give me 5 words</button>
+          </div>
+          <div class="hero-stats">
+            <div><strong id="homeTermCount">0</strong><span>terms</span></div>
+            <div><strong id="homeGrammarCount">0</strong><span>grammar modules</span></div>
+            <div><strong id="homeTopicCount">0</strong><span>clinical topics</span></div>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 480 420" role="img">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1"><stop stop-color="#14b8a6"/><stop offset="1" stop-color="#fb7185"/></linearGradient>
+              <linearGradient id="g2" x1="0" x2="1"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#a3e635"/></linearGradient>
+            </defs>
+            <circle cx="230" cy="205" r="160" fill="#ecfeff" opacity=".9"/>
+            <path d="M226 68c28 0 44 18 44 42s-16 42-44 42-44-18-44-42 16-42 44-42Z" fill="none" stroke="#0f172a" stroke-width="10"/>
+            <path d="M226 150v105m-65-58 65-37 70 37m-70 58-54 97m54-97 62 97" fill="none" stroke="#0f172a" stroke-width="11" stroke-linecap="round"/>
+            <path d="M160 196c-20 18-34 44-35 76m171-76c21 17 36 43 39 74" fill="none" stroke="url(#g1)" stroke-width="14" stroke-linecap="round"/>
+            <circle cx="173" cy="348" r="18" fill="#14b8a6"/><circle cx="289" cy="348" r="18" fill="#fb7185"/>
+            <path d="M108 110h56m217 45h-72M84 292h65m230 2h-69" stroke="url(#g2)" stroke-width="9" stroke-linecap="round"/>
+            <path d="M98 110l18-18m-18 18 18 18m280 27-18-18m18 18-18 18M74 292l18-18m-18 18 18 18m304-16-18-18m18 18-18 18" stroke="#0f766e" stroke-width="7" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="feature-card accent-teal">
+          <div class="feature-icon">🚀</div>
+          <p class="eyebrow">Start here</p>
+          <h3>Not sure what to revise?</h3>
+          <p>Take one balanced diagnostic covering every vocabulary topic and every grammar module. You will get a topic-by-topic revision plan.</p>
+          <button class="text-btn" data-view="diagnostic">Start diagnostic →</button>
+        </article>
+        <article class="feature-card accent-coral">
+          <div class="feature-icon">🔊</div>
+          <p class="eyebrow">Hear every term</p>
+          <h3>Vocabulary that talks back.</h3>
+          <p>Every vocabulary card includes British-English text-to-speech, an English definition, a French translation, an example and an illustration.</p>
+          <button class="text-btn" data-view="vocabulary">Open vocabulary →</button>
+        </article>
+        <article class="feature-card accent-blue">
+          <div class="feature-icon">🧩</div>
+          <p class="eyebrow">Grammar</p>
+          <h3>Learn it, watch it, check it.</h3>
+          <p>Each grammar module follows the same path: a concise lesson, a BBC Learning English video and a physiotherapy recap quiz.</p>
+          <button class="text-btn" data-view="grammar">Open grammar →</button>
+        </article>
+        <article class="feature-card accent-lime">
+          <div class="feature-icon">🩺</div>
+          <p class="eyebrow">Clinical English</p>
+          <h3>Use the language with patients.</h3>
+          <p>Move from isolated terminology to assessment questions, exercise instructions, explanations, handovers and case language.</p>
+          <button class="text-btn" data-view="cases">Open clinical cases →</button>
+        </article>
+      </div>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><p class="eyebrow">Core content</p><h2>Ten vocabulary areas</h2></div>
+          <button class="secondary" data-view="vocabulary">Browse all terms</button>
+        </div>
+        <div id="topicPreview" class="topic-grid"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-vocabulary" data-view-panel="vocabulary">
+      <div class="page-head"><div><p class="eyebrow">Learn</p><h2>Physiotherapy vocabulary</h2><p>Sound + English term + English definition + French translation + illustration, on every card.</p></div><span class="pill" id="vocabCountPill"></span></div>
+      <div class="toolbar sticky-tools">
+        <label>Search<input id="vocabSearch" type="search" placeholder="Try gait, clavicle, swelling…"></label>
+        <label>Topic<select id="vocabTopic"></select></label>
+        <label>Level<select id="vocabLevel"><option value="all">All levels</option><option>A2–B1</option><option>B1</option><option>B1–B2</option><option>B2</option></select></label>
+        <button class="secondary" id="randomWordBtn">🎲 Random term</button>
+      </div>
+      <div id="vocabGrid" class="vocab-grid"></div>
+    </section>
+
+    <section class="view" id="view-dictionary" data-view-panel="dictionary">
+      <div class="page-head"><div><p class="eyebrow">Look it up</p><h2>Clinical dictionary</h2><p>Search in English or French.</p></div></div>
+      <div class="dictionary-search"><input id="dictionarySearch" type="search" placeholder="Type at least 2 letters…"><button class="primary" id="dictionaryRandom">🎲 Random</button></div>
+      <div id="dictionaryResults" class="dictionary-results empty-state">Start typing to search.</div>
+    </section>
+
+    <section class="view" id="view-grammar" data-view-panel="grammar">
+      <div class="page-head"><div><p class="eyebrow">Grammar for clinical English</p><h2>Learn → watch → check</h2><p>Every module contains a concise lesson, a video and a physiotherapy recap quiz.</p></div><span class="pill">7 modules</span></div>
+      <div id="grammarGrid" class="grammar-grid"></div>
+    </section>
+
+    <section class="view" id="view-pronunciation" data-view-panel="pronunciation">
+      <div class="page-head"><div><p class="eyebrow">Pronunciation lab</p><h2>Hear it. Chunk it. Say it.</h2><p>British English is selected when your device provides an en-GB voice.</p></div></div>
+      <div class="pronunciation-layout">
+        <article class="panel"><h3>🎯 Word stress</h3><p>Work on long clinical words without reading them syllable by syllable.</p><div id="stressWords" class="chip-cloud"></div></article>
+        <article class="panel"><h3>👄 Tricky contrasts</h3><div class="mini-grid"><div><strong>/θ/ vs /t/</strong><span>therapy · thorax</span></div><div><strong>/ɪ/ vs /iː/</strong><span>limb · knee</span></div><div><strong>-ed endings</strong><span>flexed · rotated · injured</span></div><div><strong>-s endings</strong><span>joints · muscles · exercises</span></div></div></article>
+      </div>
+      <section class="section-block"><div class="section-heading"><div><p class="eyebrow">Personal workout</p><h2>Five clinical words</h2></div><button class="primary" id="newPronunciationWorkout">↻ New workout</button></div><div id="pronunciationWorkout" class="pronunciation-cards"></div></section>
+    </section>
+
+    <section class="view" id="view-flashcards" data-view-panel="flashcards">
+      <div class="page-head"><div><p class="eyebrow">Smart revision</p><h2>Flashcards</h2><p>Reveal the answer, then rate your recall.</p></div></div>
+      <div class="toolbar"><label>Revise<select id="flashTopic"></select></label><label>Session size<select id="flashSize"><option>5</option><option selected>10</option><option>15</option></select></label><button class="primary" id="newFlashSession">↻ New session</button></div>
+      <div id="flashcardArea" class="flashcard-area empty-state">Choose a topic and start a session.</div>
+    </section>
+
+    <section class="view" id="view-practice" data-view-panel="practice">
+      <div class="page-head"><div><p class="eyebrow">Play · practise · remember</p><h2>Practice games</h2><p>Short untimed activities with immediate feedback.</p></div></div>
+      <div class="game-mode-grid" id="gameModes"></div>
+      <div class="toolbar"><label>Practise with<select id="practiceTopic"></select></label><label>Session<select id="practiceSize"><option>5</option><option selected>10</option></select></label><button class="primary" id="startPractice">▶ Start game</button></div>
+      <div id="practiceArea" class="quiz-shell empty-state">Choose a mode and start when you are ready.</div>
+    </section>
+
+    <section class="view" id="view-diagnostic" data-view-panel="diagnostic">
+      <div class="diagnostic-hero">
+        <div><p class="eyebrow">Whole-site diagnostic</p><h2>Find out exactly what to revise.</h2><p>The test samples every vocabulary topic and every grammar module. It is untimed and your results stay in this browser.</p><div class="diagnostic-badges"><span>10 vocab areas</span><span>7 grammar modules</span><span>34 questions</span><span>No account</span></div></div>
+        <button class="primary large" id="startDiagnostic">▶ Start diagnostic</button>
+      </div>
+      <div id="diagnosticArea" class="diagnostic-area"></div>
+      <div id="diagnosticHistory" class="history-panel"></div>
+    </section>
+
+    <section class="view" id="view-cases" data-view-panel="cases">
+      <div class="page-head"><div><p class="eyebrow">Apply</p><h2>Clinical case lab</h2><p>Use vocabulary and grammar in realistic physiotherapy situations.</p></div></div>
+      <div id="caseGrid" class="case-grid"></div>
+    </section>
+
+    <section class="view" id="view-communication" data-view-panel="communication">
+      <div class="page-head"><div><p class="eyebrow">Communication lab</p><h2>Know the words. Now use them.</h2><p>Assessment, explanations, exercise instructions, handovers and clinical notes.</p></div></div>
+      <div id="communicationGrid" class="communication-grid"></div>
+    </section>
+
+    <section class="view" id="view-myvocab" data-view-panel="myvocab">
+      <div class="page-head"><div><p class="eyebrow">Make it yours</p><h2>My vocabulary</h2><p>Your saved word bank. Stored only in this browser.</p></div><button class="danger ghost" id="clearSaved">Clear saved words</button></div>
+      <div id="myVocabStats" class="stats-row"></div>
+      <div id="myVocabGrid" class="vocab-grid"></div>
+    </section>
+
+    <section class="view" id="view-progress" data-view-panel="progress">
+      <div class="page-head"><div><p class="eyebrow">My progress</p><h2>Useful signals, not guilt.</h2><p>See what you have worked on and what the diagnostic suggests revising next.</p></div></div>
+      <div id="progressStats" class="stats-row"></div>
+      <div id="progressRecommendations" class="section-block"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Designed and created by Eglantine Lecomte and Amaury Lemoine, with the assistance of ChatGPT.</strong></p>
+    <p>Privacy & GDPR · This learning tool follows data-minimisation principles. No account is required. Saved vocabulary, quiz progress, diagnostic results and accessibility preferences are stored only on this device in your browser’s local storage.</p>
+    <p>The site uses the browser’s speech-synthesis function for pronunciation and privacy-enhanced YouTube embeds for optional grammar videos. No analytics, advertising trackers or custom third-party cookies are used by this learning tool.</p>
+    <p class="small">Built for GitHub Pages · Physiotherapy English v1.0</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

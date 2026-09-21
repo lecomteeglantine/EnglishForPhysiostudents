@@ -1,0 +1,10 @@
+{
+  "name":"Physiotherapy English",
+  "short_name":"Physio English",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#f8fbfc",
+  "theme_color":"#0f766e",
+  "description":"Clinical English for physiotherapy students.",
+  "icons":[{"src":"assets/logo.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
