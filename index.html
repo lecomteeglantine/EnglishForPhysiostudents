@@ -535,8 +535,8 @@ notes:[
 const modes={sprint:['⚡ Solo Sprint',60],expert:['🎤 One-Minute Expert',60],picture:['🖼️ Picture Prompt',90],rephrase:['🔄 Rephrase Challenge',60],questions:['❓ Question Builder',60],notes:['📝 Speak from Notes',60]};
 const levels={A2:0,B1:1,B2:2};
 const scenes=[
-['assets/speaking/classroom.jpg','Students taking part in a university class'],
-['assets/speaking/clinical.jpg','Physiotherapy clinical learning setting']
+['https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop','Students taking part in a university class'],
+['https://commons.wikimedia.org/wiki/Special:FilePath/Phystherapractice.jpg?width=900','Physiotherapy clinical learning setting']
 ];
 let timer=null,remaining=60;
 function stop(){if(timer!==null)clearInterval(timer);timer=null;$('soloStart').textContent='Start speaking';}
@@ -550,7 +550,7 @@ function render(){
  $('soloHint').textContent=item[2];$('soloTwist').textContent=item[3];
  $('soloHint').hidden=true;$('soloTwist').hidden=true;$('soloHintToggle').textContent='💬 Show language help';$('soloTwistToggle').textContent='⚡ Bonus challenge';
  $('soloScene').replaceChildren();
- const src=mode==='picture'?'assets/speaking/clinical.jpg':'assets/speaking/classroom.jpg';
+ const src=mode==='picture'?'https://commons.wikimedia.org/wiki/Special:FilePath/Phystherapractice.jpg?width=900':'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop';
  const img=document.createElement('img');img.className='speaking-scene-photo';img.src=src;img.alt=mode==='picture'?'Clinical learning setting: describe only what you can observe.':'University learning scene';img.loading='lazy';
  img.addEventListener('error',()=>{img.remove();const p=document.createElement('p');p.textContent='Visual unavailable — use the written speaking prompt.';$('soloScene').append(p);});
  $('soloScene').append(img);
