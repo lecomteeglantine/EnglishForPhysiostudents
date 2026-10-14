@@ -386,7 +386,7 @@
       const wrapper=document.createElement('div');wrapper.className='speaking-photo-wrap';
       const img=document.createElement('img');img.className='speaking-scene-photo';img.loading='lazy';img.src=photo[0];img.alt=photo[1];
       const fallback=document.createElement('span');fallback.className='speaking-photo-fallback';fallback.textContent=m.contextType==='class'?'Classroom speaking scene':'Physiotherapy speaking scene';fallback.hidden=true;
-      img.addEventListener('error',()=>{img.hidden=true;fallback.hidden=false;});
+      img.setAttribute('onerror','this.hidden=true;this.nextElementSibling.hidden=false');
       wrapper.append(img,fallback);return wrapper.outerHTML;
     }
     function showSpeakingStage(){
