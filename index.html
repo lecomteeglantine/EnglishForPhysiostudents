@@ -502,5 +502,81 @@ $('speakingGameHelp').addEventListener('click',()=>{const e=$('speakingGameLangu
 render();
 })();
 </script>
+<script>
+(() => {
+'use strict';
+const $=id=>document.getElementById(id);
+const bank={
+sprint:[
+['Give clear instructions for a seated knee extension.','Give three short steps.','First, sit upright. Then straighten your knee. Finally, lower your leg.','Explain again more slowly.'],
+['Why is communication important in physiotherapy?','Give one reason and one example.','I think … because … For example …','Give another practical example.'],
+['Can telehealth replace in-person physiotherapy?','Give a balanced view with one limitation.','On the one hand … However … It depends on …','Consider patients without reliable internet.']],
+expert:[
+['How can students prevent back discomfort?','Give two practical suggestions and a conclusion.','First … Secondly … To sum up …','Add an example from university life.'],
+['How can physiotherapy support recovery after an ankle sprain?','Explain two goals and a realistic example.','Our goal is … For instance …','Mention how progress is reviewed.'],
+['How should rehabilitation be adapted to individual patients?','Discuss two factors and acknowledge uncertainty.','This may depend on … Nevertheless …','Consider a patient with limited mobility.']],
+picture:[
+['Observe the photograph carefully.','Describe only the visible people, setting and actions before suggesting what might be happening.','I can see … It looks as though …','Explain what cannot be established from a photograph.'],
+['Observe the photograph carefully.','Describe the scene and suggest appropriate communication in this setting.','The setting appears to be … A clinician could ask …','Suggest a question to check understanding.'],
+['Observe the photograph carefully.','Separate observation from interpretation and discuss a possible clinical communication challenge.','The photograph shows … We cannot assume …','Identify one important piece of missing information.']],
+rephrase:[
+['“Please extend your knee.”','Explain this instruction in everyday English.','Please straighten your leg slowly.','Repeat it without medical terminology.'],
+['Explain why balance training can help.','Say it again using patient-friendly words.','In other words … This may help you …','Add an example from daily life.'],
+['Explain why recovery time varies.','Rephrase without making a guarantee.','Recovery varies between people. We will review …','Answer a request for an exact recovery date.']],
+questions:[
+['First appointment with a patient.','Ask three simple assessment questions.','What brings you in? Where does it hurt?','Add a question about daily activities.'],
+['A patient reports back discomfort after desk work.','Ask about onset, triggers, relief and impact.','When did it start? What makes it worse?','Ask about sleep and work.'],
+['A patient feels worried after surgery.','Ask five respectful, open questions without assuming a diagnosis.','Could you tell me more about …?','Ask about the patient’s own goals.']],
+notes:[
+['knee · stairs · pain · exercise','Make four connected sentences based only on these words.','The patient reports … We could discuss …','Add one relevant question.'],
+['ankle · balance · confidence · home','Create a short explanation with a beginning and conclusion.','The aim is … We can review …','Explain one possible limitation.'],
+['persistent symptoms · goals · uncertainty · reassessment','Give a balanced handover; do not invent findings.','What we know is … We still need …','Mention one missing clinical detail.']]
+};
+const modes={sprint:['⚡ Solo Sprint',60],expert:['🎤 One-Minute Expert',60],picture:['🖼️ Picture Prompt',90],rephrase:['🔄 Rephrase Challenge',60],questions:['❓ Question Builder',60],notes:['📝 Speak from Notes',60]};
+const levels={A2:0,B1:1,B2:2};
+const scenes=[
+['assets/speaking/classroom.jpg','Students taking part in a university class'],
+['assets/speaking/clinical.jpg','Physiotherapy clinical learning setting']
+];
+let timer=null,remaining=60;
+function stop(){if(timer!==null)clearInterval(timer);timer=null;$('soloStart').textContent='Start speaking';}
+function clock(){ $('soloTimeDisplay').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0');}
+function render(){
+ stop();
+ const mode=$('soloMode').value,level=$('soloLevel').value,item=bank[mode][levels[level]],meta=modes[mode];
+ remaining=meta[1];clock();
+ $('soloTitle').textContent=meta[0];$('soloBadge').textContent=level+' · Individual challenge · '+remaining+' sec';
+ $('soloPrompt').textContent=item[0];$('soloGoal').textContent=item[1];$('soloKeywords').replaceChildren();
+ $('soloHint').textContent=item[2];$('soloTwist').textContent=item[3];
+ $('soloHint').hidden=true;$('soloTwist').hidden=true;$('soloHintToggle').textContent='💬 Show language help';$('soloTwistToggle').textContent='⚡ Bonus challenge';
+ $('soloScene').replaceChildren();
+ const src=mode==='picture'?'assets/speaking/clinical.jpg':'assets/speaking/classroom.jpg';
+ const img=document.createElement('img');img.className='speaking-scene-photo';img.src=src;img.alt=mode==='picture'?'Clinical learning setting: describe only what you can observe.':'University learning scene';img.loading='lazy';
+ img.addEventListener('error',()=>{img.remove();const p=document.createElement('p');p.textContent='Visual unavailable — use the written speaking prompt.';$('soloScene').append(p);});
+ $('soloScene').append(img);
+ $('soloStatus').textContent='Read the prompt, then start speaking.';$('soloCompleted').checked=false;
+ try{let saved=JSON.parse(localStorage.getItem('physio-solo-completed-v1')||'{}');$('soloProgress').textContent=Object.keys(saved).length+' completed game-and-level combinations saved on this device.';}catch{$('soloProgress').textContent='Progress saving is unavailable.';}
+}
+$('soloMode').addEventListener('change',render);$('soloLevel').addEventListener('change',render);
+$('soloNew').addEventListener('click',()=>{const k=Object.keys(modes),i=k.indexOf($('soloMode').value);$('soloMode').value=k[(i+1)%k.length];render();});
+$('soloStart').addEventListener('click',()=>{
+ if(timer!==null){stop();$('soloStatus').textContent='Paused.';return;}
+ if(!remaining)remaining=modes[$('soloMode').value][1];
+ $('soloStart').textContent='Pause';$('soloStatus').textContent='Speak in your own words.';
+ timer=setInterval(()=>{remaining=Math.max(remaining-1,0);clock();if(!remaining){stop();$('soloStatus').textContent='Time! Now complete your self-check.';}},1000);
+});
+$('soloReset').addEventListener('click',()=>{stop();remaining=modes[$('soloMode').value][1];clock();$('soloStatus').textContent='Timer reset.';});
+for(const [button,target,show,hide] of [['soloHintToggle','soloHint','💬 Show language help','Hide language help'],['soloTwistToggle','soloTwist','⚡ Bonus challenge','Hide bonus challenge']]){
+ $(button).addEventListener('click',()=>{const p=$(target);p.hidden=!p.hidden;$(button).textContent=p.hidden?show:hide;});
+}
+$('soloSave').addEventListener('click',()=>{
+ if(!$('soloCompleted').checked){$('soloProgress').textContent='Tick the self-check after speaking aloud.';return;}
+ try{const key='physio-solo-completed-v1',saved=JSON.parse(localStorage.getItem(key)||'{}');saved[$('soloMode').value+'-'+$('soloLevel').value]=true;localStorage.setItem(key,JSON.stringify(saved));$('soloProgress').textContent='Well done! '+Object.keys(saved).length+' completed game-and-level combinations.';}catch{$('soloProgress').textContent='This browser cannot save progress. Your practice still counts.';}
+});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&timer!==null){stop();$('soloStatus').textContent='Paused when the tab became inactive.';}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b&&b.dataset.view!=='speaking'&&timer!==null)stop();});
+render();
+})();
+</script>
 </body>
 </html>
