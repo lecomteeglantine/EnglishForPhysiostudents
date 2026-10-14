@@ -9,6 +9,27 @@
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .speaking-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:1rem;margin-top:1.2rem;align-items:start}
+    .speaking-layout h3,.speaking-layout h4{margin-bottom:.5rem}
+    .speaking-intro{margin-top:1rem}.speaking-note{font-size:.94rem;opacity:.85}
+    .speaking-controls{margin-top:1rem;display:flex;flex-wrap:wrap;gap:.8rem;align-items:end}
+    .speaking-controls label{flex:1 1 190px}.speaking-controls select{max-width:100%}
+    .speaking-surface{padding:1rem;border-radius:1rem;background:rgba(20,184,166,.09);margin:1rem 0}
+    .speaking-surface ul{padding-left:1.3rem;line-height:1.65}
+    .speaking-phrases{display:flex;gap:.55rem;flex-wrap:wrap}
+    .speaking-phrases span{border:1px solid #0f766e55;border-radius:1rem;padding:.45rem .7rem;background:rgba(20,184,166,.08)}
+    .speaking-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+    .speaking-model{border-left:4px solid #0f766e;padding:.6rem 1rem;background:rgba(20,184,166,.08);border-radius:.5rem}
+    .speaking-clock{font-size:clamp(2.3rem,7vw,4rem);font-weight:800;font-variant-numeric:tabular-nums;text-align:center;margin:1rem 0;color:var(--accent,#0f766e)}
+    .speaking-rubric{display:grid;gap:.8rem;margin:1rem 0}
+    .speaking-rubric label{display:flex;align-items:start;gap:.6rem;cursor:pointer;line-height:1.4}
+    .speaking-rubric input{width:1.15rem;height:1.15rem;flex-shrink:0}
+    .speaking-task,.speaking-coach{min-width:0}
+    #speakingTimerStatus,#speakingFeedback{min-height:1.5rem}
+    @media(max-width:760px){.speaking-layout{grid-template-columns:1fr}.speaking-actions button{flex:1 1 150px}.speaking-controls{display:grid}.speaking-controls label,.speaking-controls select{width:100%}}
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
@@ -63,6 +84,7 @@
         <button data-view="communication">💬 Communication lab <small>Assess, explain, hand over, instruct</small></button>
       </div>
     </details>
+    <button class="nav-item" data-view="speaking">🎙️ Speaking</button>
     <details>
       <summary>♥ My learning <span id="savedCountNav">0</span></summary>
       <div class="nav-menu">
@@ -210,6 +232,40 @@
       <div id="communicationGrid" class="communication-grid"></div>
     </section>
 
+
+    <section class="view" id="view-speaking" data-view-panel="speaking">
+      <div class="page-head"><div><p class="eyebrow">Speaking studio · A2 to B2</p><h2>Speak with confidence. Care with clarity.</h2><p>Practise realistic physiotherapy conversations, one step at a time. Work alone or with a partner.</p></div><span class="pill">6 clinical missions</span></div>
+      <div class="speaking-intro panel">
+        <h3>🎙️ Your speaking workout</h3>
+        <p><strong>1.</strong> Choose a scenario. <strong>2.</strong> Read the situation and useful phrases. <strong>3.</strong> Speak for 60–120 seconds. <strong>4.</strong> Check the model and assess your communication.</p>
+        <p class="speaking-note">No microphone or account needed. Your speaking scores are self-assessments, not automatic pronunciation marks. Practise out loud; a partner can play the patient.</p>
+      </div>
+      <div class="speaking-controls toolbar">
+        <label for="speakingLevel">Choose your level <select id="speakingLevel"><option value="all">All levels</option><option value="A2">A2 · Getting started</option><option value="B1">B1 · Building confidence</option><option value="B2">B2 · Clinical reasoning</option></select></label>
+        <label for="speakingMission">Clinical situation <select id="speakingMission"></select></label>
+        <button class="secondary" id="speakingNext">Next mission →</button>
+      </div>
+      <div class="speaking-layout">
+        <article class="panel speaking-task">
+          <p class="eyebrow" id="speakingMeta"></p><h3 id="speakingTitle"></h3><p id="speakingContext"></p>
+          <div class="speaking-surface"><h4>Your role</h4><p id="speakingRole"></p><h4>Make sure you…</h4><ul id="speakingChecklist"></ul></div>
+          <h4>Useful expressions</h4><div id="speakingPhrases" class="speaking-phrases"></div>
+          <div class="speaking-actions"><button class="primary" id="speakingListen">🔊 Listen to model phrases</button><button class="secondary" id="speakingModelToggle" aria-expanded="false">Show sample answer</button></div>
+          <div id="speakingModel" class="speaking-model" hidden><h4>Example response — adapt it, don't memorise it</h4><p id="speakingModelText"></p></div>
+        </article>
+        <aside class="panel speaking-coach">
+          <h3>⏱️ Speaking timer</h3><p>Prepare first, then speak without reading the model.</p>
+          <div id="speakingClock" class="speaking-clock" role="timer" aria-live="off">01:00</div>
+          <div class="speaking-actions"><button class="primary" id="speakingStart">Start</button><button class="secondary" id="speakingReset">Reset</button></div>
+          <p id="speakingTimerStatus" role="status" aria-live="polite">Ready when you are.</p>
+          <h3>✅ Self-check</h3><p>After speaking, tick what you achieved.</p>
+          <div id="speakingRubric" class="speaking-rubric"></div>
+          <button class="secondary" id="speakingSave">Save self-check on this device</button>
+          <p id="speakingFeedback" role="status" aria-live="polite"></p>
+        </aside>
+      </div>
+    </section>
+
     <section class="view" id="view-myvocab" data-view-panel="myvocab">
       <div class="page-head"><div><p class="eyebrow">Make it yours</p><h2>My vocabulary</h2><p>Your saved word bank. Stored only in this browser.</p></div><button class="danger ghost" id="clearSaved">Clear saved words</button></div>
       <div id="myVocabStats" class="stats-row"></div>
@@ -233,5 +289,66 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="data.js"></script>
   <script src="app.js"></script>
+
+  <script>
+  (() => {
+    'use strict';
+    const missions=[
+      {level:'A2',title:'Welcome a new patient',seconds:60,context:'A patient arrives for their first appointment after a knee injury.',role:'You are the physiotherapist. Welcome the patient and start a simple assessment.',tasks:['Introduce yourself and make the patient comfortable.','Ask about the main problem and pain.','Explain what will happen next.'],phrases:['Hello, my name is…','What brings you in today?','Where does it hurt?','On a scale from zero to ten…','First, I will ask a few questions.'],model:'Hello, my name is Alex and I am your physiotherapist today. What brings you in? Where does your knee hurt? How strong is the pain on a scale from zero to ten? Thank you. First, I will ask a few questions, then we will look at how your knee moves.'},
+      {level:'A2',title:'Give an exercise instruction',seconds:60,context:'A patient is learning a gentle seated knee extension.',role:'Explain the movement slowly and check the patient understands.',tasks:['Explain the starting position.','Give three clear steps.','Add a safety instruction and check understanding.'],phrases:['Sit upright on the chair.','Slowly straighten your knee.','Hold for three seconds.','Stop if you feel sharp pain.','Could you show me?'],model:'Please sit upright with both feet on the floor. Slowly straighten your right knee. Hold for three seconds, then lower your foot. Repeat five times. Do not force the movement. Stop if you feel sharp pain. Could you show me one repetition?'},
+      {level:'B1',title:'Explore lower-back pain',seconds:90,context:'A patient reports lower-back pain after working at a desk for several weeks.',role:'Conduct a short, patient-centred history. Do not diagnose.',tasks:['Ask when and how the pain started.','Ask about aggravating and easing factors.','Ask how symptoms affect daily activities.','Summarise what the patient has told you.'],phrases:['When did the pain start?','What makes it worse or better?','Does it affect your daily routine?','Have I understood correctly?'],model:'Could you tell me when the pain started? Was there a particular event? What makes it worse, and what helps? Does it affect your sleep or your work? So, if I understand correctly, you have had discomfort for several weeks, especially after sitting. Is that right?'},
+      {level:'B1',title:'Explain a rehabilitation plan',seconds:90,context:'A patient recovering from an ankle sprain wants to know what therapy involves.',role:'Describe a realistic phased plan without promising a fixed recovery date.',tasks:['Explain the main rehabilitation goal.','Describe two activities in simple English.','Explain how progress will be reviewed.','Invite questions.'],phrases:['Our main goal is to…','We will start with…','As you improve, we can…','We will review your progress.','What questions do you have?'],model:'Our main goal is to help you move comfortably and regain confidence with everyday activities. We will begin with gentle ankle movement and balance exercises at a suitable level. As you improve, we can gradually increase the challenge. We will check your progress together and adapt the plan. What questions do you have?'},
+      {level:'B2',title:'Respond to a worried patient',seconds:120,context:'A patient is anxious because progress after shoulder surgery seems slow.',role:'Listen empathetically, explain uncertainty and discuss appropriate follow-up.',tasks:['Acknowledge the patient’s concerns.','Explain why recovery can vary.','Avoid guarantees or an unsupported diagnosis.','Agree on sensible next steps and check understanding.'],phrases:['I can understand why that feels frustrating.','Recovery rates can vary.','Based on what we know so far…','We should review…','How does that plan sound to you?'],model:'I can understand why you are worried and frustrated. Recovery can vary from person to person, and we should not judge progress from one exercise alone. I would like to review how your shoulder is moving, your symptoms and your goals. If anything seems unusual or concerning, we can discuss this with your treating clinician. We will adjust the plan based on your response. How does that sound?'},
+      {level:'B2',title:'Give a concise clinical handover',seconds:120,context:'You are handing over care of a patient with persistent knee pain to another clinician.',role:'Give a structured spoken handover using only the information below: three months of knee pain, stairs aggravate symptoms, reduced confidence, gentle strengthening started, reassessment planned.',tasks:['Introduce the reason for the handover.','Summarise relevant history and impact.','Explain intervention and response without inventing results.','State the next action and an uncertainty.'],phrases:['I am handing over the care of…','The patient reports…','So far, we have started…','Response to treatment is not yet established.','The next step is…'],model:'I am handing over a patient with a three-month history of knee pain. Stairs aggravate the symptoms, and the patient reports reduced confidence with everyday movement. Gentle strengthening has been started, but the response to treatment is not yet established. A reassessment is planned to review symptoms, function and the appropriate next steps.'}
+    ];
+    const rubric=['I completed the clinical communication task.','I used clear, patient-friendly English.','I spoke in complete, connected sentences.','I checked understanding or communicated uncertainty appropriately.'];
+    const $=id=>document.getElementById(id);
+    let current=0,remaining=60,timer=null;
+    const key='physio-speaking-checks-v1';
+    function stop(){if(timer!==null){clearInterval(timer);timer=null;} $('speakingStart').textContent='Start';}
+    function clock(){const m=Math.floor(remaining/60),s=remaining%60;$('speakingClock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
+    function available(){return missions.map((m,i)=>({m,i})).filter(({m})=>$('speakingLevel').value==='all'||m.level===$('speakingLevel').value);}
+    function updateOptions(preferred){
+      const items=available();$('speakingMission').innerHTML=items.map(({m,i})=>'<option value="'+i+'">'+m.level+' · '+m.title+'</option>').join('');
+      current=items.some(({i})=>i===preferred)?preferred:items[0].i;
+      $('speakingMission').value=String(current);render();
+    }
+    function render(){
+      stop();const m=missions[current];remaining=m.seconds;clock();
+      $('speakingMeta').textContent=m.level+' · '+m.seconds+'-second speaking challenge';
+      $('speakingTitle').textContent=m.title;$('speakingContext').textContent=m.context;$('speakingRole').textContent=m.role;
+      $('speakingChecklist').replaceChildren(...m.tasks.map(t=>{const li=document.createElement('li');li.textContent=t;return li;}));
+      $('speakingPhrases').replaceChildren(...m.phrases.map(t=>{const s=document.createElement('span');s.textContent=t;return s;}));
+      $('speakingModelText').textContent=m.model;$('speakingModel').hidden=true;
+      $('speakingModelToggle').textContent='Show sample answer';$('speakingModelToggle').setAttribute('aria-expanded','false');
+      const saved=read()[current]||[];$('speakingRubric').replaceChildren(...rubric.map((r,i)=>{const label=document.createElement('label');const c=document.createElement('input');c.type='checkbox';c.checked=!!saved[i];const text=document.createElement('span');text.textContent=r;label.append(c,text);return label;}));
+      $('speakingTimerStatus').textContent='Ready when you are.';$('speakingFeedback').textContent=saved.length?'Previous self-check restored.':'';
+    }
+    function read(){try{return JSON.parse(localStorage.getItem(key)||'{}')||{};}catch{return {};}}
+    $('speakingLevel').addEventListener('change',()=>updateOptions(current));
+    $('speakingMission').addEventListener('change',e=>{current=Number(e.target.value);render();});
+    $('speakingNext').addEventListener('click',()=>{const a=available();const pos=a.findIndex(x=>x.i===current);current=a[(pos+1)%a.length].i;$('speakingMission').value=String(current);render();});
+    $('speakingStart').addEventListener('click',()=>{
+      if(timer!==null){stop();$('speakingTimerStatus').textContent='Paused. Press Start to continue.';return;}
+      if(remaining===0)remaining=missions[current].seconds;
+      $('speakingStart').textContent='Pause';$('speakingTimerStatus').textContent='Speak out loud — keep going!';
+      timer=setInterval(()=>{remaining=Math.max(0,remaining-1);clock();if(!remaining){stop();$('speakingTimerStatus').textContent='Time! Now review your answer and tick your self-check.';}},1000);
+    });
+    $('speakingReset').addEventListener('click',()=>{stop();remaining=missions[current].seconds;clock();$('speakingTimerStatus').textContent='Timer reset.';});
+    $('speakingModelToggle').addEventListener('click',()=>{const el=$('speakingModel');el.hidden=!el.hidden;$('speakingModelToggle').textContent=el.hidden?'Show sample answer':'Hide sample answer';$('speakingModelToggle').setAttribute('aria-expanded',String(!el.hidden));});
+    $('speakingListen').addEventListener('click',()=>{
+      if(!('speechSynthesis' in window)){$('speakingFeedback').textContent='Audio playback is not supported by this browser.';return;}
+      speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(missions[current].phrases.join('. '));u.lang='en-GB';u.rate=.88;
+      const voice=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase()==='en-gb');if(voice)u.voice=voice;speechSynthesis.speak(u);
+    });
+    $('speakingSave').addEventListener('click',()=>{
+      const checks=[...$('speakingRubric').querySelectorAll('input')].map(x=>x.checked);
+      try{const all=read();all[current]=checks;localStorage.setItem(key,JSON.stringify(all));$('speakingFeedback').textContent='Saved on this device: '+checks.filter(Boolean).length+'/'+rubric.length+' communication goals.';}
+      catch{$('speakingFeedback').textContent='Your browser did not allow saving. You can still practise and self-check.';}
+    });
+    updateOptions(0);
+  })();
+  </script>
+
 </body>
 </html>
