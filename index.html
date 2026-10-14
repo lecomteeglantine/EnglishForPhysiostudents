@@ -386,10 +386,17 @@
       const wrapper=document.createElement('div');wrapper.className='speaking-photo-wrap';
       const img=document.createElement('img');img.className='speaking-scene-photo';img.loading='lazy';img.src=photo[0];img.alt=photo[1];
       const fallback=document.createElement('span');fallback.className='speaking-photo-fallback';fallback.textContent=m.contextType==='class'?'Classroom speaking scene':'Physiotherapy speaking scene';fallback.hidden=true;
-      img.setAttribute('onerror','this.hidden=true;this.nextElementSibling.hidden=false');
+      img.setAttribute('data-speaking-image','1');
       wrapper.append(img,fallback);return wrapper.outerHTML;
     }
-    function showSpeakingStage(){
+    document.addEventListener('error',event=>{
+      const img=event.target;
+      if(!(img instanceof HTMLImageElement)||!img.matches('[data-speaking-image]'))return;
+      img.hidden=true;
+      const fallback=img.nextElementSibling;
+      if(fallback)fallback.hidden=false;
+    },true);
+        function showSpeakingStage(){
       const m=missions[current], labels=['Discover the situation','Get your phrases ready','Your turn: speak!','Plot twist!','Mission complete'];
       const bodies=[m.context+' '+m.role,'Choose two useful phrases below. Plan your first sentence, then try without reading.','Press Start on the speaking timer below. Speak aloud and complete your mini-challenges.',(m.contextType==='class'?classroomTwists:clinicalTwists)[current%6]+' Take a few seconds, then respond aloud.','Reveal the sample answer, tick the self-check and save your progress. You can replay this mission.'];
       $('speakingStageMeta').textContent='STEP '+(missionStage+1)+' / 5 · '+m.level;
