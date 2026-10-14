@@ -57,6 +57,18 @@ jobs:
               if remote not in text:
                   raise RuntimeError("Expected source reference not found: "+title)
               text=text.replace(remote,local)
+          # Use the same locally hosted photographs in the mission cards, too.
+          text=text.replace(
+              "https://commons.wikimedia.org/wiki/Special:FilePath/Physiotherapist_working_examining_treating_injured_leg_of_male_patient.jpg?width=900",
+              "assets/speaking/exercise.jpg")
+          text=text.replace(
+              "https://commons.wikimedia.org/wiki/Special:FilePath/Athlete_undergoing_knee_treatment_during_rehabilitation_session_in_clinic.jpg?width=900",
+              "assets/speaking/exercise.jpg")
+          for remote in (
+              "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=900&auto=format&fit=crop",
+          ):
+              text=text.replace(remote,"assets/speaking/classroom.jpg")
           page.write_text(text,encoding="utf-8")
           worker=pathlib.Path("service-worker.js")
           sw=worker.read_text(encoding="utf-8")
