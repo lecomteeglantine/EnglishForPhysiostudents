@@ -18,6 +18,7 @@
     .speaking-mission-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem;margin:1rem 0 1.3rem}.speaking-mission-card{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;min-width:0;min-height:185px;text-align:left;padding:1rem;background:var(--card-bg,#fff);border:2px solid rgba(15,118,110,.19);border-radius:1rem;color:inherit;cursor:pointer}.speaking-mission-card:hover,.speaking-mission-card:focus-visible{border-color:#0f766e;transform:translateY(-2px)}.speaking-mission-card.chosen{background:rgba(20,184,166,.10);border-color:#0f766e}.speaking-mission-card strong{font-size:1.03rem}.speaking-mission-card small{opacity:.8;line-height:1.4}.speaking-mission-card .mission-art{font-size:2rem}.speaking-mission-card .mission-tag{font-weight:700;font-size:.8rem;background:#e5f8f4;color:#115e59;padding:.25rem .55rem;border-radius:1rem}.speaking-mission-card .mission-cta{margin-top:auto;font-weight:700;color:#0f766e}
     @media(max-width:850px){.speaking-mission-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.speaking-banner{grid-template-columns:1fr}.speaking-banner svg{max-width:250px;justify-self:center}.speaking-pathways,.speaking-mission-grid{grid-template-columns:1fr}.speaking-mission-card{min-height:unset}}
     body.dark .speaking-path,body.dark .speaking-mission-card{background:#17363f}body.dark .speaking-banner{background:linear-gradient(120deg,#17494c,#26384d);color:#f0fdfa}
+    .speaking-journey{margin:1.2rem 0;background:var(--card-bg,#fff);border:1px solid #0f766e55;border-radius:1.25rem;overflow:hidden}.speaking-journey>h3{padding:1rem 1.2rem;margin:0}.speaking-stage-tabs{display:flex;gap:.35rem;overflow-x:auto;padding:.6rem;background:#0f766e12}.speaking-stage-tabs button{white-space:nowrap;min-height:44px;border:1px solid #0f766e55;border-radius:1.4rem;background:transparent;color:inherit;padding:.6rem .8rem;cursor:pointer}.speaking-stage-tabs button.active{background:#0f766e;color:white}.speaking-stage-art{background:linear-gradient(115deg,#e0f7f1,#e0f2fe);display:grid;place-items:center;padding:1rem}.speaking-stage-art svg{width:min(100%,420px);max-height:220px}.speaking-stage-copy{padding:1.1rem 1.3rem}.speaking-stage-copy h4{font-size:1.28rem}.speaking-mission-card .mission-art{display:grid;place-items:center;background:#e0f7f1;border-radius:.8rem;width:100%;height:90px}.speaking-mission-card .mission-art svg{max-height:90px;width:100%}body.dark .speaking-stage-art{background:#1e4150}body.dark .speaking-mission-card .mission-art{background:#1e4150}@media(max-width:600px){.speaking-stage-copy{padding:1rem}}
     .speaking-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:1rem;margin-top:1.2rem;align-items:start}
     .speaking-layout h3,.speaking-layout h4{margin-bottom:.5rem}
     .speaking-intro{margin-top:1rem}.speaking-note{font-size:.94rem;opacity:.85}
@@ -259,6 +260,16 @@
         <button class="secondary" id="speakingNext">Surprise me →</button>
       </div>
       <div id="speakingMissionCards" class="speaking-mission-grid" aria-label="Speaking mission cards"></div>
+      <div class="speaking-journey">
+  <h3>🎬 Your speaking adventure</h3>
+  <div class="speaking-stage-tabs" role="group" aria-label="Mission steps">
+    <button type="button" data-speaking-stage="0">1 · Discover</button><button type="button" data-speaking-stage="1">2 · Prepare</button><button type="button" data-speaking-stage="2">3 · Speak</button><button type="button" data-speaking-stage="3">4 · Plot twist</button><button type="button" data-speaking-stage="4">5 · Debrief</button>
+  </div>
+  <div class="speaking-stage-art" id="speakingStageArt" aria-label="Illustrated speaking scene"></div>
+  <div class="speaking-stage-copy"><p class="eyebrow" id="speakingStageMeta"></p><h4 id="speakingStageHeading"></h4><p id="speakingStageInstructions"></p>
+    <div class="speaking-actions"><button class="primary" id="speakingStageForward">Continue →</button><button class="secondary" id="speakingStagePrevious">← Back</button></div>
+  </div>
+</div>
       <div class="speaking-layout">
         <article class="panel speaking-task">
           <p class="eyebrow" id="speakingMeta"></p><h3 id="speakingTitle"></h3><p id="speakingContext"></p>
@@ -329,17 +340,37 @@
     const classroomRubric=['I made my point or asked a clear question.','I used polite, appropriate classroom English.','I spoke in connected sentences and gave an example or reason.','I listened and responded to another speaker when relevant.'];
     const clinicalRubric=['I completed the clinical communication task.','I used clear, patient-friendly English.','I spoke in complete, connected sentences.','I checked understanding and avoided unsupported claims.'];
     const $=id=>document.getElementById(id);
-    let current=0,remaining=60,timer=null;
+    let current=0,remaining=60,timer=null,missionStage=0;
     const key='physio-speaking-checks-v1';
     function stop(){if(timer!==null){clearInterval(timer);timer=null;} $('speakingStart').textContent='Start';}
     function clock(){const m=Math.floor(remaining/60),s=remaining%60;$('speakingClock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
     function available(){return missions.map((m,i)=>({m,i})).filter(({m})=>($('speakingLevel').value==='all'||m.level===$('speakingLevel').value)&&($('speakingContextFilter').value==='all'||m.contextType===$('speakingContextFilter').value));}
+
+    const classroomTwists=['Your teacher asks for an example. Give one.','Your classmate looks confused. Rephrase your point.','Another student disagrees. Respond politely.','You have 15 seconds to summarise your idea.','Someone asks for a reason. Explain why.','Your teacher asks about limitations. Mention one.'];
+    const clinicalTwists=['The patient looks confused. Explain more simply.','The patient asks a follow-up question. Check understanding.','The patient is worried. Acknowledge their concern.','The patient forgets a step. Repeat it clearly.','The patient asks for a guarantee. Explain uncertainty.','A colleague asks for a two-sentence summary.'];
+    function speakingIllustration(m){
+      const clinic=m.contextType==='clinical', hue=clinic?'#0f766e':'#f47285';
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-label="'+(clinic?'Physiotherapist consulting a patient':'Student speaking to a class')+'"><rect width="400" height="210" rx="15" fill="#eafaf6"/><rect x="190" y="39" width="177" height="113" rx="12" fill="'+(clinic?'#c7f3eb':'#ccecff')+'" stroke="#17616c" stroke-width="5"/>'+(clinic?'<path d="M214 95h32l13-24 22 47 14-23h39" stroke="#e56d81" stroke-width="7" fill="none"/>':'<path d="M215 72h120M215 94h100M215 116h108" stroke="#3686aa" stroke-width="7" stroke-linecap="round"/>')+'<circle cx="104" cy="82" r="39" fill="#f3c6a1"/><path d="M66 72q2-45 42-40t37 45l-18-23-45-1Z" fill="#334b63"/><path d="M28 205q8-83 77-83t77 83" fill="'+hue+'"/><circle cx="91" cy="86" r="4" fill="#234"/><circle cx="117" cy="86" r="4" fill="#234"/><path d="M93 103q12 12 26 0" fill="none" stroke="#234" stroke-width="4"/><rect x="120" y="6" width="149" height="38" rx="15" fill="white" stroke="#0f766e" stroke-width="3"/><text x="194" y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#145a53">'+(clinic?'How can I help?':'I have an idea!')+'</text></svg>';
+    }
+    function showSpeakingStage(){
+      const m=missions[current], labels=['Discover the situation','Get your phrases ready','Your turn: speak!','Plot twist!','Mission complete'];
+      const bodies=[m.context+' '+m.role,'Choose two useful phrases below. Plan your first sentence, then try without reading.','Press Start on the speaking timer below. Speak aloud and complete your mini-challenges.',(m.contextType==='class'?classroomTwists:clinicalTwists)[current%6]+' Take a few seconds, then respond aloud.','Reveal the sample answer, tick the self-check and save your progress. You can replay this mission.'];
+      $('speakingStageMeta').textContent='STEP '+(missionStage+1)+' / 5 · '+m.level;
+      $('speakingStageHeading').textContent=labels[missionStage];$('speakingStageInstructions').textContent=bodies[missionStage];
+      $('speakingStageArt').innerHTML=speakingIllustration(m);
+      document.querySelectorAll('[data-speaking-stage]').forEach(b=>b.classList.toggle('active',Number(b.dataset.speakingStage)===missionStage));
+      $('speakingStageForward').textContent=missionStage===4?'↻ Replay':'Next step →';$('speakingStagePrevious').disabled=missionStage===0;
+    }
+    document.querySelectorAll('[data-speaking-stage]').forEach(b=>b.addEventListener('click',()=>{missionStage=Number(b.dataset.speakingStage);showSpeakingStage();}));
+    $('speakingStageForward').addEventListener('click',()=>{missionStage=(missionStage+1)%5;showSpeakingStage();});
+    $('speakingStagePrevious').addEventListener('click',()=>{missionStage=Math.max(0,missionStage-1);showSpeakingStage();});
+
     function drawMissionCards(){
       const art={class:['🙋','💡','🤝','🎤','⚖️','🔍'],clinical:['👋','🦵','💬','📋','💗','📝']};
       const cards=available();const area=$('speakingMissionCards');area.replaceChildren(...cards.map(({m,i})=>{
         const btn=document.createElement('button');btn.type='button';btn.className='speaking-mission-card'+(i===current?' chosen':'');btn.setAttribute('aria-pressed',String(i===current));
         const tag=document.createElement('span');tag.className='mission-tag';tag.textContent=m.level+' · '+m.seconds+' sec';
-        const icon=document.createElement('span');icon.className='mission-art';icon.setAttribute('aria-hidden','true');icon.textContent=art[m.contextType][i<6?i:i-6];
+        const icon=document.createElement('span');icon.className='mission-art';icon.setAttribute('aria-hidden','true');icon.innerHTML=speakingIllustration(m);
         const title=document.createElement('strong');title.textContent=m.title;
         const desc=document.createElement('small');desc.textContent=m.context;
         const cta=document.createElement('span');cta.className='mission-cta';cta.textContent=i===current?'✓ Current mission':'Start mission →';
@@ -353,7 +384,7 @@
       $('speakingMission').value=String(current);render();
     }
     function render(){
-      stop();const m=missions[current];remaining=m.seconds;clock();
+      stop();missionStage=0;const m=missions[current];remaining=m.seconds;clock();showSpeakingStage();
       $('speakingMeta').textContent=(m.contextType==='class'?'Speaking in class':'Clinical communication')+' · '+m.level+' · '+m.seconds+'-second challenge';
       $('speakingTitle').textContent=m.title;$('speakingContext').textContent=m.context;$('speakingRole').textContent=m.role;
       $('speakingChecklist').replaceChildren(...m.tasks.map(t=>{const li=document.createElement('li');li.textContent=t;return li;}));
