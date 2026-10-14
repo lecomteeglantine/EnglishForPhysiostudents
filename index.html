@@ -11,6 +11,13 @@
   <link rel="stylesheet" href="styles.css">
 
   <style>
+
+    .speaking-banner{display:grid;grid-template-columns:1.35fr .75fr;align-items:center;gap:1rem;padding:clamp(1.2rem,3vw,2.2rem);border-radius:1.4rem;background:linear-gradient(120deg,#e1fbf4,#eff6ff 58%,#ffedf4);color:#123044;margin-top:1rem;overflow:hidden}
+    .speaking-banner h3{font-size:clamp(1.6rem,3vw,2.4rem);margin:.2rem 0 .7rem}.speaking-banner p{max-width:58ch}.speaking-banner svg{width:100%;max-height:210px}.speaking-steps{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}.speaking-steps span{padding:.45rem .75rem;background:white;border-radius:1rem;font-weight:700;font-size:.88rem}
+    .speaking-pathways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.2rem 0}.speaking-path{display:flex;flex-direction:column;align-items:flex-start;gap:.45rem;text-align:left;min-width:0;padding:1.2rem;background:var(--card-bg,#fff);color:inherit;border:2px solid rgba(15,118,110,.25);border-radius:1.2rem;cursor:pointer;transition:transform .16s,border-color .16s,box-shadow .16s}.speaking-path:hover,.speaking-path:focus-visible{transform:translateY(-2px);border-color:#0f766e;box-shadow:0 5px 18px #0f766e18}.speaking-path.selected{border-color:#0f766e;box-shadow:0 0 0 3px #14b8a62e}.speaking-path strong{font-size:1.25rem}.speaking-path em{font-style:normal;font-weight:bold;color:#0f766e}.path-illustration{font-size:2rem;display:block;padding:.3rem 0}
+    .speaking-mission-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem;margin:1rem 0 1.3rem}.speaking-mission-card{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;min-width:0;min-height:185px;text-align:left;padding:1rem;background:var(--card-bg,#fff);border:2px solid rgba(15,118,110,.19);border-radius:1rem;color:inherit;cursor:pointer}.speaking-mission-card:hover,.speaking-mission-card:focus-visible{border-color:#0f766e;transform:translateY(-2px)}.speaking-mission-card.chosen{background:rgba(20,184,166,.10);border-color:#0f766e}.speaking-mission-card strong{font-size:1.03rem}.speaking-mission-card small{opacity:.8;line-height:1.4}.speaking-mission-card .mission-art{font-size:2rem}.speaking-mission-card .mission-tag{font-weight:700;font-size:.8rem;background:#e5f8f4;color:#115e59;padding:.25rem .55rem;border-radius:1rem}.speaking-mission-card .mission-cta{margin-top:auto;font-weight:700;color:#0f766e}
+    @media(max-width:850px){.speaking-mission-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.speaking-banner{grid-template-columns:1fr}.speaking-banner svg{max-width:250px;justify-self:center}.speaking-pathways,.speaking-mission-grid{grid-template-columns:1fr}.speaking-mission-card{min-height:unset}}
+    body.dark .speaking-path,body.dark .speaking-mission-card{background:#17363f}body.dark .speaking-banner{background:linear-gradient(120deg,#17494c,#26384d);color:#f0fdfa}
     .speaking-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:1rem;margin-top:1.2rem;align-items:start}
     .speaking-layout h3,.speaking-layout h4{margin-bottom:.5rem}
     .speaking-intro{margin-top:1rem}.speaking-note{font-size:.94rem;opacity:.85}
@@ -236,31 +243,36 @@
 
     <section class="view" id="view-speaking" data-view-panel="speaking">
       <div class="page-head"><div><p class="eyebrow">Speaking studio · A2 to B2</p><h2>Speak with confidence. Care with clarity.</h2><p>Practise speaking up in class and communicating with patients, from A2 to B2. Work alone, in pairs or in groups.</p></div><span class="pill">12 speaking missions</span></div>
-      <div class="speaking-intro panel">
-        <h3>🎙️ Your speaking workout</h3>
-        <p><strong>1.</strong> Choose a speaking situation. <strong>2.</strong> Read the situation and useful phrases. <strong>3.</strong> Speak for 60–120 seconds. <strong>4.</strong> Check the model and assess your communication.</p>
-        <p class="speaking-note">No microphone or account needed. Your speaking scores are self-assessments, not automatic pronunciation marks. Practise out loud; a partner can play the patient or a classmate.</p>
+      <div class="speaking-banner">
+        <div><p class="eyebrow">YOUR ENGLISH SPEAKING ADVENTURE</p><h3>Small steps. Big voice! ✨</h3><p>Pick a world, choose a mission, and practise in your own way. No perfect accent required — just give it a go!</p><div class="speaking-steps"><span>① Choose</span><span>② Prepare</span><span>③ Speak</span><span>④ Celebrate</span></div></div>
+        <svg viewBox="0 0 260 190" role="img" aria-label="Friendly illustration of two students practising a conversation"><rect x="19" y="83" width="220" height="75" rx="24" fill="#ccfbf1"/><circle cx="80" cy="72" r="29" fill="#f8caa4"/><path d="M54 65q9-39 43-23l13 20" fill="#274c58"/><path d="M42 157q0-58 38-58t38 58" fill="#14b8a6"/><circle cx="183" cy="71" r="29" fill="#f4bd95"/><path d="M151 67q7-38 37-29t28 31" fill="#724a6d"/><path d="M144 157q0-58 39-58t39 58" fill="#fb7185"/><rect x="99" y="13" width="111" height="37" rx="17" fill="white" stroke="#0f766e" stroke-width="3"/><path d="M135 50l-10 16 28-16" fill="white" stroke="#0f766e" stroke-width="3"/><text x="154" y="37" text-anchor="middle" font-size="17" font-weight="bold" fill="#115e59">Let's talk!</text><circle cx="74" cy="75" r="3" fill="#193f45"/><circle cx="91" cy="75" r="3" fill="#193f45"/><path d="M75 85q8 9 17 0" fill="none" stroke="#193f45" stroke-width="3"/><circle cx="176" cy="76" r="3" fill="#193f45"/><circle cx="193" cy="76" r="3" fill="#193f45"/><path d="M177 86q8 9 17 0" fill="none" stroke="#193f45" stroke-width="3"/></svg>
       </div>
+      <div class="speaking-pathways" aria-label="Choose your speaking world">
+        <button class="speaking-path selected" data-speaking-path="class" aria-pressed="true"><span class="path-illustration" aria-hidden="true">🙋‍♀️ 💬 📚</span><strong>Speaking in class</strong><span>Ask, answer, discuss and present. Be part of the conversation!</span><em>Explore classroom missions →</em></button>
+        <button class="speaking-path" data-speaking-path="clinical" aria-pressed="false"><span class="path-illustration" aria-hidden="true">🩺 🗣️ 💚</span><strong>Clinical speaking</strong><span>Talk to patients and colleagues with confidence.</span><em>Explore clinical missions →</em></button>
+      </div>
+      <div class="speaking-intro panel"><h3>🗺️ Your mission map</h3><p><strong>Pick a card →</strong> read your brief → listen to useful phrases → start the speaking clock → reveal a sample answer → tick your own progress.</p><p class="speaking-note">Play solo, in pairs or with a group. Nothing is recorded or uploaded.</p></div>
       <div class="speaking-controls toolbar">
-        <label for="speakingContextFilter">Speaking context <select id="speakingContextFilter"><option value="class">🙋 Speaking in class</option><option value="clinical">🩺 Speaking with patients</option><option value="all">All activities</option></select></label>
-        <label for="speakingLevel">Choose your level <select id="speakingLevel"><option value="all">All levels</option><option value="A2">A2 · Getting started</option><option value="B1">B1 · Building confidence</option><option value="B2">B2 · Clinical reasoning</option></select></label>
-        <label for="speakingMission">Speaking activity <select id="speakingMission"></select></label>
-        <button class="secondary" id="speakingNext">Next mission →</button>
+        <label for="speakingContextFilter">Your speaking world <select id="speakingContextFilter"><option value="class">🙋 Speaking in class</option><option value="clinical">🩺 Clinical speaking</option><option value="all">Both worlds</option></select></label>
+        <label for="speakingLevel">Challenge level <select id="speakingLevel"><option value="all">All levels</option><option value="A2">A2 · Warm-up</option><option value="B1">B1 · Build confidence</option><option value="B2">B2 · Stretch yourself</option></select></label>
+        <label for="speakingMission">Selected mission <select id="speakingMission"></select></label>
+        <button class="secondary" id="speakingNext">Surprise me →</button>
       </div>
+      <div id="speakingMissionCards" class="speaking-mission-grid" aria-label="Speaking mission cards"></div>
       <div class="speaking-layout">
         <article class="panel speaking-task">
           <p class="eyebrow" id="speakingMeta"></p><h3 id="speakingTitle"></h3><p id="speakingContext"></p>
-          <div class="speaking-surface"><h4>Your role</h4><p id="speakingRole"></p><h4>Make sure you…</h4><ul id="speakingChecklist"></ul></div>
-          <h4>Useful expressions</h4><div id="speakingPhrases" class="speaking-phrases"></div>
+          <div class="speaking-surface"><h4>🎭 Your role</h4><p id="speakingRole"></p><h4>🎯 Your mini-challenges</h4><ul id="speakingChecklist"></ul></div>
+          <h4>💬 Your phrase toolkit</h4><div id="speakingPhrases" class="speaking-phrases"></div>
           <div class="speaking-actions"><button class="primary" id="speakingListen">🔊 Listen to model phrases</button><button class="secondary" id="speakingModelToggle" aria-expanded="false">Show sample answer</button></div>
           <div id="speakingModel" class="speaking-model" hidden><h4>Example response — adapt it, don't memorise it</h4><p id="speakingModelText"></p></div>
         </article>
         <aside class="panel speaking-coach">
-          <h3>⏱️ Speaking timer</h3><p>Prepare first, then speak without reading the model.</p>
+          <h3>⏱️ Ready, steady, speak!</h3><p>Prepare first, then speak without reading the model.</p>
           <div id="speakingClock" class="speaking-clock" role="timer" aria-live="off">01:00</div>
           <div class="speaking-actions"><button class="primary" id="speakingStart">Start</button><button class="secondary" id="speakingReset">Reset</button></div>
           <p id="speakingTimerStatus" role="status" aria-live="polite">Ready when you are.</p>
-          <h3>✅ Self-check</h3><p>After speaking, tick what you achieved.</p>
+          <h3>🏅 Mission debrief</h3><p>After speaking, tick what you achieved.</p>
           <div id="speakingRubric" class="speaking-rubric"></div>
           <button class="secondary" id="speakingSave">Save self-check on this device</button>
           <p id="speakingFeedback" role="status" aria-live="polite"></p>
@@ -322,6 +334,19 @@
     function stop(){if(timer!==null){clearInterval(timer);timer=null;} $('speakingStart').textContent='Start';}
     function clock(){const m=Math.floor(remaining/60),s=remaining%60;$('speakingClock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
     function available(){return missions.map((m,i)=>({m,i})).filter(({m})=>($('speakingLevel').value==='all'||m.level===$('speakingLevel').value)&&($('speakingContextFilter').value==='all'||m.contextType===$('speakingContextFilter').value));}
+    function drawMissionCards(){
+      const art={class:['🙋','💡','🤝','🎤','⚖️','🔍'],clinical:['👋','🦵','💬','📋','💗','📝']};
+      const cards=available();const area=$('speakingMissionCards');area.replaceChildren(...cards.map(({m,i})=>{
+        const btn=document.createElement('button');btn.type='button';btn.className='speaking-mission-card'+(i===current?' chosen':'');btn.setAttribute('aria-pressed',String(i===current));
+        const tag=document.createElement('span');tag.className='mission-tag';tag.textContent=m.level+' · '+m.seconds+' sec';
+        const icon=document.createElement('span');icon.className='mission-art';icon.setAttribute('aria-hidden','true');icon.textContent=art[m.contextType][i<6?i:i-6];
+        const title=document.createElement('strong');title.textContent=m.title;
+        const desc=document.createElement('small');desc.textContent=m.context;
+        const cta=document.createElement('span');cta.className='mission-cta';cta.textContent=i===current?'✓ Current mission':'Start mission →';
+        btn.append(icon,tag,title,desc,cta);btn.addEventListener('click',()=>{current=i;$('speakingMission').value=String(i);render();$('speakingTitle').scrollIntoView({behavior:'smooth',block:'center'});});return btn;
+      }));
+      document.querySelectorAll('[data-speaking-path]').forEach(b=>{let active=b.dataset.speakingPath===$('speakingContextFilter').value;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',String(active));});
+    }
     function updateOptions(preferred){
       const items=available();$('speakingMission').innerHTML=items.map(({m,i})=>'<option value="'+i+'">'+m.level+' · '+m.title+'</option>').join('');
       current=items.some(({i})=>i===preferred)?preferred:items[0].i;
@@ -336,9 +361,11 @@
       $('speakingModelText').textContent=m.model;$('speakingModel').hidden=true;
       $('speakingModelToggle').textContent='Show sample answer';$('speakingModelToggle').setAttribute('aria-expanded','false');
       const saved=read()[current]||[];const rubric=m.contextType==='class'?classroomRubric:clinicalRubric;$('speakingRubric').replaceChildren(...rubric.map((r,i)=>{const label=document.createElement('label');const c=document.createElement('input');c.type='checkbox';c.checked=!!saved[i];const text=document.createElement('span');text.textContent=r;label.append(c,text);return label;}));
+      drawMissionCards();
       $('speakingTimerStatus').textContent='Ready when you are.';$('speakingFeedback').textContent=saved.length?'Previous self-check restored.':'';
     }
     function read(){try{return JSON.parse(localStorage.getItem(key)||'{}')||{};}catch{return {};}}
+    document.querySelectorAll('[data-speaking-path]').forEach(b=>b.addEventListener('click',()=>{$('speakingContextFilter').value=b.dataset.speakingPath;updateOptions(current);document.getElementById('speakingMissionCards').scrollIntoView({behavior:'smooth',block:'start'});}));
     $('speakingContextFilter').addEventListener('change',()=>updateOptions(current));
     $('speakingLevel').addEventListener('change',()=>updateOptions(current));
     $('speakingMission').addEventListener('change',e=>{current=Number(e.target.value);render();});
