@@ -24,6 +24,7 @@
 .speaking-photo{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:.8rem;display:block}.solo-photo-prompt{margin:0;width:100%}.solo-photo-prompt img{display:block;width:100%;height:260px;object-fit:cover;border-radius:.8rem}.solo-photo-prompt figcaption{font-size:.84rem;margin-top:.45rem;color:#135d55;font-weight:600}.speaking-photo-credits{font-size:.75rem;margin:1rem 0;color:inherit;opacity:.8}.speaking-photo-credits a{color:inherit;text-decoration:underline}
 .speaking-scene-photo{display:block;width:100%;height:100%;max-height:220px;object-fit:cover;border-radius:.65rem}.speaking-mission-card .mission-art img{width:100%;height:90px;object-fit:cover}.speaking-stage-art img{max-width:520px;max-height:260px;object-fit:cover;border-radius:.8rem}
     .speaking-mission-card .mission-art{background:#e9f6f4}.speaking-mission-card .mission-art img{width:100%;height:100%;object-fit:cover}
+.solo-picture-picker{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin:.6rem 0}.solo-picture-picker select{min-width:190px}.solo-picture-picker[hidden]{display:none!important}.solo-image-credit{font-size:.82rem;color:#115e59;text-decoration:underline;display:block;margin:.55rem 0}.solo-scene:has(.solo-image-credit){display:block}.solo-scene .speaking-scene-photo{width:100%;height:230px;object-fit:cover;border-radius:.7rem}
     .speaking-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:1rem;margin-top:1.2rem;align-items:start}
     .speaking-layout h3,.speaking-layout h4{margin-bottom:.5rem}
     .speaking-intro{margin-top:1rem}.speaking-note{font-size:.94rem;opacity:.85}
@@ -269,6 +270,7 @@
       <section class="solo-lab" aria-labelledby="soloLabTitle">
   <div class="section-heading"><div><p class="eyebrow">SOLO SPEAKING LAB</p><h3 id="soloLabTitle">Your voice, your pace 🎤</h3><p>Six short games you can play on your own, from A2 to B2. No microphone, account or partner required.</p></div></div>
   <div class="solo-controls"><label>My level <select id="soloLevel"><option>A2</option><option selected>B1</option><option>B2</option></select></label><label>Choose a game <select id="soloMode"><option value="sprint">⚡ Solo Sprint</option><option value="expert">🎤 One-Minute Expert</option><option value="picture">🖼️ Picture Prompt</option><option value="rephrase">🔄 Rephrase Challenge</option><option value="questions">❓ Question Builder</option><option value="notes">📝 Speak from Notes</option></select></label><button type="button" class="secondary" id="soloNew">New challenge ↻</button></div>
+  <div class="solo-picture-picker" id="soloPicturePicker" hidden><label for="soloPictureSelect">Choose a real photograph</label><select id="soloPictureSelect"><option value="0">Students in class</option><option value="1">Physiotherapy clinic</option><option value="2">Clinical exercise</option></select></div>
   <div class="solo-game-shell"><div class="solo-scene" id="soloScene" aria-label="Speaking task scene"></div><div class="solo-game-copy"><p id="soloBadge" class="eyebrow"></p><h4 id="soloTitle"></h4><p id="soloPrompt"></p><div id="soloKeywords" class="solo-keywords"></div><h5>🎯 Your speaking goal</h5><p id="soloGoal"></p><div class="speaking-actions"><button type="button" class="secondary" id="soloHintToggle">💬 Show language help</button><button type="button" class="secondary" id="soloTwistToggle">⚡ Bonus challenge</button></div><p class="solo-reveal" id="soloHint" hidden></p><p class="solo-reveal" id="soloTwist" hidden></p></div></div>
   <div class="solo-finish"><div><h4>⏱️ Your speaking clock</h4><p id="soloTimeDisplay" role="timer">01:00</p><p id="soloStatus" role="status" aria-live="polite">Read the task, then start speaking.</p></div><div class="speaking-actions"><button type="button" class="primary" id="soloStart">Start speaking</button><button type="button" class="secondary" id="soloReset">Reset</button></div><label class="solo-check"><input id="soloCompleted" type="checkbox"/> I spoke aloud and tried to complete the task.</label><button type="button" class="secondary" id="soloSave">Save my completed challenge</button><p id="soloProgress" role="status" aria-live="polite"></p></div>
 </section>
@@ -534,10 +536,7 @@ notes:[
 };
 const modes={sprint:['⚡ Solo Sprint',60],expert:['🎤 One-Minute Expert',60],picture:['🖼️ Picture Prompt',90],rephrase:['🔄 Rephrase Challenge',60],questions:['❓ Question Builder',60],notes:['📝 Speak from Notes',60]};
 const levels={A2:0,B1:1,B2:2};
-const scenes=[
-['https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop','Students taking part in a university class'],
-['https://commons.wikimedia.org/wiki/Special:FilePath/Phystherapractice.jpg?width=900','Physiotherapy clinical learning setting']
-];
+const realPhotos=[{"src":"https://commons.wikimedia.org/wiki/Special:FilePath/Students%20in%20classroom.jpg?width=900","author":"Esthee2010","licence":"CC BY-SA 4.0","alt":"Students studying together in a classroom.","task":"Describe how students work together; suggest a polite way to join the conversation.","url":"https://commons.wikimedia.org/wiki/File:Students_in_classroom.jpg"},{"src":"https://commons.wikimedia.org/wiki/Special:FilePath/Clinica%20de%20fisioterapia.jpg?width=900","author":"Gonzalo Sampeter","licence":"CC0 1.0","alt":"A physiotherapy clinic interior.","task":"Describe the facilities you can see; explain what you cannot infer about patient care.","url":"https://commons.wikimedia.org/wiki/File:Clinica_de_fisioterapia.jpg"},{"src":"https://commons.wikimedia.org/wiki/Special:FilePath/Spangdahlem%20physical%20therapy%20rehabilitates%20Airmen%20after%20injury%20(7270862).jpg?width=900","author":"US Air Force / Wikimedia Commons","licence":"See source licence","alt":"A cable-machine exercise in a physiotherapy setting.","task":"Describe the exercise equipment and suggest a clear safety instruction without diagnosing.","url":"https://commons.wikimedia.org/wiki/File:Spangdahlem_physical_therapy_rehabilitates_Airmen_after_injury_(7270862).jpg"}];
 let timer=null,remaining=60;
 function stop(){if(timer!==null)clearInterval(timer);timer=null;$('soloStart').textContent='Start speaking';}
 function clock(){ $('soloTimeDisplay').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0');}
@@ -550,13 +549,18 @@ function render(){
  $('soloHint').textContent=item[2];$('soloTwist').textContent=item[3];
  $('soloHint').hidden=true;$('soloTwist').hidden=true;$('soloHintToggle').textContent='💬 Show language help';$('soloTwistToggle').textContent='⚡ Bonus challenge';
  $('soloScene').replaceChildren();
- const src=mode==='picture'?'https://commons.wikimedia.org/wiki/Special:FilePath/Phystherapractice.jpg?width=900':'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=900&auto=format&fit=crop';
- const img=document.createElement('img');img.className='speaking-scene-photo';img.src=src;img.alt=mode==='picture'?'Clinical learning setting: describe only what you can observe.':'University learning scene';img.loading='lazy';
+ $('soloPicturePicker').hidden=mode!=='picture';
+ const selected=mode==='picture'?realPhotos[Number($('soloPictureSelect').value)]:realPhotos[0];
+ const src=selected.src;
+ if(mode==='picture'){$('soloPrompt').textContent=selected.task;$('soloGoal').textContent='First describe what is actually visible; then offer a cautious interpretation.';}
+ const img=document.createElement('img');img.className='speaking-scene-photo';img.src=src;img.alt=selected.alt;img.loading='lazy';
  img.addEventListener('error',()=>{img.remove();const p=document.createElement('p');p.textContent='Visual unavailable — use the written speaking prompt.';$('soloScene').append(p);});
  $('soloScene').append(img);
+ if(mode==='picture'){const credit=document.createElement('a');credit.className='solo-image-credit';credit.href=selected.url;credit.target='_blank';credit.rel='noopener noreferrer';credit.textContent='Photograph: '+selected.author+' · '+selected.licence+' · View source';$('soloScene').append(credit);}
  $('soloStatus').textContent='Read the prompt, then start speaking.';$('soloCompleted').checked=false;
  try{let saved=JSON.parse(localStorage.getItem('physio-solo-completed-v1')||'{}');$('soloProgress').textContent=Object.keys(saved).length+' completed game-and-level combinations saved on this device.';}catch{$('soloProgress').textContent='Progress saving is unavailable.';}
 }
+$('soloPictureSelect').addEventListener('change',render);
 $('soloMode').addEventListener('change',render);$('soloLevel').addEventListener('change',render);
 $('soloNew').addEventListener('click',()=>{const k=Object.keys(modes),i=k.indexOf($('soloMode').value);$('soloMode').value=k[(i+1)%k.length];render();});
 $('soloStart').addEventListener('click',()=>{
