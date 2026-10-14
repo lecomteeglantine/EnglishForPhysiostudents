@@ -19,6 +19,7 @@
     @media(max-width:850px){.speaking-mission-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.speaking-banner{grid-template-columns:1fr}.speaking-banner svg{max-width:250px;justify-self:center}.speaking-pathways,.speaking-mission-grid{grid-template-columns:1fr}.speaking-mission-card{min-height:unset}}
     body.dark .speaking-path,body.dark .speaking-mission-card{background:#17363f}body.dark .speaking-banner{background:linear-gradient(120deg,#17494c,#26384d);color:#f0fdfa}
     .speaking-journey{margin:1.2rem 0;background:var(--card-bg,#fff);border:1px solid #0f766e55;border-radius:1.25rem;overflow:hidden}.speaking-journey>h3{padding:1rem 1.2rem;margin:0}.speaking-stage-tabs{display:flex;gap:.35rem;overflow-x:auto;padding:.6rem;background:#0f766e12}.speaking-stage-tabs button{white-space:nowrap;min-height:44px;border:1px solid #0f766e55;border-radius:1.4rem;background:transparent;color:inherit;padding:.6rem .8rem;cursor:pointer}.speaking-stage-tabs button.active{background:#0f766e;color:white}.speaking-stage-art{background:linear-gradient(115deg,#e0f7f1,#e0f2fe);display:grid;place-items:center;padding:1rem}.speaking-stage-art svg{width:min(100%,420px);max-height:220px}.speaking-stage-copy{padding:1.1rem 1.3rem}.speaking-stage-copy h4{font-size:1.28rem}.speaking-mission-card .mission-art{display:grid;place-items:center;background:#e0f7f1;border-radius:.8rem;width:100%;height:90px}.speaking-mission-card .mission-art svg{max-height:90px;width:100%}body.dark .speaking-stage-art{background:#1e4150}body.dark .speaking-mission-card .mission-art{background:#1e4150}@media(max-width:600px){.speaking-stage-copy{padding:1rem}}
+    .speaking-games{margin:1.4rem 0}.speaking-game-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin:1rem 0}.speaking-game-choice{display:flex;flex-direction:column;gap:.45rem;text-align:left;background:var(--card-bg,#fff);border:2px solid #0f766e44;color:inherit;border-radius:1.1rem;padding:1rem;min-height:150px;cursor:pointer}.speaking-game-choice>span{font-size:2rem}.speaking-game-choice strong{font-size:1.1rem}.speaking-game-choice small{line-height:1.4}.speaking-game-choice.selected,.speaking-game-choice:focus-visible{border-color:#0f766e;box-shadow:0 0 0 3px #14b8a630}.speaking-game-panel{background:var(--card-bg,#fff);border:1px solid #0f766e55;border-radius:1.2rem;padding:1.1rem}.speaking-game-options{display:flex;gap:1rem;flex-wrap:wrap;align-items:end}.speaking-game-options label{display:grid;gap:.3rem;flex:1 1 140px}.speaking-game-options select{width:100%}.speaking-game-scene{margin:1rem 0;padding:1.1rem;display:flex;align-items:center;gap:1rem;background:linear-gradient(110deg,#e0f7f1,#e6f0ff);border-radius:1rem;color:#143b4b}.speaking-game-scene-icon{font-size:clamp(2rem,6vw,4rem);padding:.5rem;flex:none}.speaking-game-scene h4{font-size:1.3rem;margin:.2rem 0}.speaking-game-roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem}.speaking-game-role{background:rgba(20,184,166,.08);border-left:4px solid #0f766e;border-radius:.65rem;padding:.8rem}.speaking-game-role strong{display:block;margin-bottom:.4rem}.speaking-game-twist,.speaking-game-language{padding:1rem;border-radius:.75rem;margin-top:.8rem;background:#fff0f4;color:#71364b}.speaking-game-language{background:#e5f8f4;color:#115e59}.speaking-game-footnote{font-size:.9rem;opacity:.8}.speaking-games [hidden]{display:none!important}body.dark .speaking-game-choice,body.dark .speaking-game-panel{background:#17363f}body.dark .speaking-game-scene{background:#21434a;color:#fff}body.dark .speaking-game-twist{background:#4d2d3d;color:#fff}body.dark .speaking-game-language{background:#1a4b44;color:#fff}@media(max-width:700px){.speaking-game-choices{grid-template-columns:1fr}.speaking-game-choice{min-height:0}.speaking-game-scene{align-items:start}.speaking-game-panel{padding:.8rem}}
     .speaking-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:1rem;margin-top:1.2rem;align-items:start}
     .speaking-layout h3,.speaking-layout h4{margin-bottom:.5rem}
     .speaking-intro{margin-top:1rem}.speaking-note{font-size:.94rem;opacity:.85}
@@ -260,6 +261,23 @@
         <button class="secondary" id="speakingNext">Surprise me →</button>
       </div>
       <div id="speakingMissionCards" class="speaking-mission-grid" aria-label="Speaking mission cards"></div>
+      <section class="speaking-games" aria-labelledby="speakingGamesTitle">
+ <div class="section-heading"><div><p class="eyebrow">PLAY · SPEAK · CONNECT</p><h3 id="speakingGamesTitle">Choose your speaking game</h3><p>Short, playable challenges for 1–4 students. No accounts or microphones required.</p></div></div>
+ <div class="speaking-game-choices" role="group" aria-label="Speaking game modes">
+  <button type="button" data-speaking-game="roulette" class="speaking-game-choice selected" aria-pressed="true"><span aria-hidden="true">🎲</span><strong>Speaking Roulette</strong><small>A surprise question and a quick answer</small></button>
+  <button type="button" data-speaking-game="roleplay" class="speaking-game-choice" aria-pressed="false"><span aria-hidden="true">🎭</span><strong>Role-play Challenge</strong><small>Different roles, one conversation</small></button>
+  <button type="button" data-speaking-game="debate" class="speaking-game-choice" aria-pressed="false"><span aria-hidden="true">⚡</span><strong>Debate Duel</strong><small>Make a point, then respond</small></button>
+ </div>
+ <div class="speaking-game-panel">
+  <div class="speaking-game-options"><label>Challenge level <select id="speakingGameLevel"><option>A2</option><option selected>B1</option><option>B2</option></select></label><label>Players <select id="speakingGamePlayers"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option></select></label><button class="primary" type="button" id="speakingGameNew">Next challenge →</button></div>
+  <div class="speaking-game-scene"><div class="speaking-game-scene-icon" id="speakingGameIcon" aria-hidden="true">🎲</div><div><p class="eyebrow" id="speakingGameMeta"></p><h4 id="speakingGameTitle"></h4><p id="speakingGameIntro"></p></div></div>
+  <div id="speakingGameRoles" class="speaking-game-roles"></div>
+  <div class="speaking-game-twist" id="speakingGameTwist" hidden></div>
+  <div class="speaking-actions"><button type="button" class="secondary" id="speakingGameReveal">Reveal surprise →</button><button type="button" class="secondary" id="speakingGameHelp">Show language help</button></div>
+  <div id="speakingGameLanguage" class="speaking-game-language" hidden></div>
+  <p class="speaking-game-footnote" id="speakingGameStatus" role="status" aria-live="polite"></p>
+ </div>
+</section>
       <div class="speaking-journey">
   <h3>🎬 Your speaking adventure</h3>
   <div class="speaking-stage-tabs" role="group" aria-label="Mission steps">
@@ -424,6 +442,53 @@
     updateOptions(0);
   })();
   </script>
-
+<script>
+(() => {
+'use strict';
+const $=id=>document.getElementById(id);
+const tasks={
+ A2:[
+  {title:'A new word',prompt:'You do not understand the word “posture”. Ask your teacher for help.',point:'Ask for clarification.',roles:['Ask politely what the word means.','Explain the word using a simple example.'],twist:'Now ask for another example.',help:'Excuse me, what does … mean? / Could you give an example?'},
+  {title:'Explain one exercise',prompt:'Tell a partner how to do a simple seated knee extension.',point:'Give clear steps.',roles:['Explain the exercise in three short steps.','Listen and ask one question.'],twist:'Your partner says: “Could you say it more slowly?”',help:'First, sit upright. Then… / Finally… / Is that clear?'},
+  {title:'Introduce your opinion',prompt:'Should students practise English in every physiotherapy lesson?',point:'Give a reason and an example.',roles:['Give one opinion and a reason.','Ask “Why?” and listen.'],twist:'Now give an example from university life.',help:'I think … because … / For example …'}
+ ],
+ B1:[
+  {title:'Rehabilitation apps',prompt:'Should patients use mobile apps to support physiotherapy at home?',point:'Discuss advantages and limitations.',roles:['Support using apps and give an example.','Explain a limitation and suggest a solution.'],twist:'A patient has no smartphone. Adapt your recommendation.',help:'I agree because … / However … / A possible solution is …'},
+  {title:'A worried patient',prompt:'A patient is nervous about trying a new exercise.',point:'Use clear and reassuring English.',roles:['Explain the exercise and acknowledge the concern.','Ask one realistic question as the patient.'],twist:'The patient asks whether the exercise will hurt.',help:'I understand your concern. / We can adapt the exercise. / Tell me if …'},
+  {title:'Group presentation',prompt:'Prepare a 60-second explanation of how physiotherapy supports balance.',point:'Present, listen and ask a question.',roles:['Introduce the topic with two examples.','Ask one relevant follow-up question.'],twist:'Summarise the whole talk in one sentence.',help:'Today I will explain … / First … / Another example is …'}
+ ],
+ B2:[
+  {title:'Remote versus face-to-face',prompt:'Can remote consultations replace face-to-face physiotherapy?',point:'Support claims with reasoning and limits.',roles:['Argue when remote care can work well.','Challenge the claim and propose a nuanced alternative.'],twist:'An older patient has limited internet access. Reconsider your conclusion.',help:'While … / This depends on … / An important limitation is …'},
+  {title:'Evidence matters',prompt:'A classmate says a new treatment works for everyone, based on one study.',point:'Ask about evidence and avoid overclaiming.',roles:['Explain the study claim carefully.','Ask about the study design and generalisability.'],twist:'The study has only 12 participants. Qualify your conclusion.',help:'What evidence supports …? / We cannot conclude that … / Further research may …'},
+  {title:'Clinical handover',prompt:'A patient has persistent knee pain and difficulties using stairs; a reassessment is planned.',point:'Handover without inventing clinical findings.',roles:['Give a concise, structured handover.','Ask for a missing piece of information.'],twist:'The receiving clinician asks what is still uncertain.',help:'The patient reports … / We have not yet established … / The next step is …'}
+ ]};
+let mode='roulette',index=0;
+function render(){
+ const level=$('speakingGameLevel').value, players=Number($('speakingGamePlayers').value),task=tasks[level][index%tasks[level].length];
+ const meta={roulette:['🎲','Speaking Roulette'],roleplay:['🎭','Role-play Challenge'],debate:['⚡','Debate Duel']}[mode];
+ $('speakingGameIcon').textContent=meta[0];$('speakingGameTitle').textContent=task.title;
+ $('speakingGameMeta').textContent=meta[1]+' · '+level+' · '+players+' player'+(players>1?'s':'');
+ $('speakingGameIntro').textContent=task.prompt;
+ const roleTexts=Array.from({length:players},(_,i)=>{
+   if(mode==='roulette')return players===1?'Speak for 45–90 seconds. Include a reason or example.':'Player '+(i+1)+': Give your answer, then invite the next speaker.';
+   if(mode==='roleplay')return players===1?'Play both roles: '+task.roles.join(' Then '):'Player '+(i+1)+': '+(i===0?task.roles[0]:i===1?task.roles[1]:'Observe and give one helpful follow-up question.');
+   return players===1?'Give both sides of the debate, then a balanced conclusion.':'Player '+(i+1)+': '+(i%2===0?task.roles[0]:task.roles[1]);
+ });
+ $('speakingGameRoles').replaceChildren(...roleTexts.map((s,i)=>{let el=document.createElement('div');el.className='speaking-game-role';let b=document.createElement('strong');b.textContent=players===1?'Your mission':'Role '+(i+1);let p=document.createElement('p');p.textContent=s;el.append(b,p);return el;}));
+ $('speakingGameTwist').textContent='⚡ Plot twist: '+task.twist;$('speakingGameTwist').hidden=true;
+ $('speakingGameLanguage').textContent='💬 Useful English: '+task.help;$('speakingGameLanguage').hidden=true;
+ $('speakingGameHelp').textContent='Show language help';$('speakingGameReveal').textContent='Reveal surprise →';
+ $('speakingGameStatus').textContent='Goal: '+task.point+' Take turns; every player should contribute.';
+ document.querySelectorAll('[data-speaking-game]').forEach(b=>{const on=b.dataset.speakingGame===mode;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on));});
+}
+document.querySelectorAll('[data-speaking-game]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.speakingGame;index=0;render();}));
+$('speakingGameLevel').addEventListener('change',()=>{index=0;render();});
+$('speakingGamePlayers').addEventListener('change',render);
+$('speakingGameNew').addEventListener('click',()=>{index++;render();});
+$('speakingGameReveal').addEventListener('click',()=>{const e=$('speakingGameTwist');e.hidden=!e.hidden;$('speakingGameReveal').textContent=e.hidden?'Reveal surprise →':'Hide surprise';});
+$('speakingGameHelp').addEventListener('click',()=>{const e=$('speakingGameLanguage');e.hidden=!e.hidden;$('speakingGameHelp').textContent=e.hidden?'Show language help':'Hide language help';});
+render();
+})();
+</script>
 </body>
 </html>
