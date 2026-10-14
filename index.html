@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f766e">
   <meta name="description" content="Clinical English for physiotherapy students: vocabulary, grammar, pronunciation, practice, diagnostic and clinical communication.">
   <title>Physiotherapy English</title>
-  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
 
@@ -27,6 +27,7 @@
     .speaking-rubric label{display:flex;align-items:start;gap:.6rem;cursor:pointer;line-height:1.4}
     .speaking-rubric input{width:1.15rem;height:1.15rem;flex-shrink:0}
     .speaking-task,.speaking-coach{min-width:0}
+    .speaking-layout [hidden]{display:none!important}
     #speakingTimerStatus,#speakingFeedback{min-height:1.5rem}
     @media(max-width:760px){.speaking-layout{grid-template-columns:1fr}.speaking-actions button{flex:1 1 150px}.speaking-controls{display:grid}.speaking-controls label,.speaking-controls select{width:100%}}
   </style>
@@ -36,7 +37,7 @@
 
   <header class="site-header">
     <div class="brand-wrap">
-      <img class="brand-logo" src="assets/logo.svg" alt="" width="54" height="54">
+      <img class="brand-logo" src="logo.svg" alt="" width="54" height="54">
       <div>
         <h1>Physiotherapy English</h1>
         <p>Clinical English for physiotherapy students</p>
@@ -313,7 +314,8 @@
     classroom.forEach(m=>m.contextType='class');
     missions.forEach(m=>m.contextType='clinical');
     missions.push(...classroom);
-    const rubric=['I completed the speaking task.','I used clear, patient-friendly English.','I spoke in complete, connected sentences.','I checked understanding or communicated uncertainty appropriately.'];
+    const classroomRubric=['I made my point or asked a clear question.','I used polite, appropriate classroom English.','I spoke in connected sentences and gave an example or reason.','I listened and responded to another speaker when relevant.'];
+    const clinicalRubric=['I completed the clinical communication task.','I used clear, patient-friendly English.','I spoke in complete, connected sentences.','I checked understanding and avoided unsupported claims.'];
     const $=id=>document.getElementById(id);
     let current=0,remaining=60,timer=null;
     const key='physio-speaking-checks-v1';
@@ -333,7 +335,7 @@
       $('speakingPhrases').replaceChildren(...m.phrases.map(t=>{const s=document.createElement('span');s.textContent=t;return s;}));
       $('speakingModelText').textContent=m.model;$('speakingModel').hidden=true;
       $('speakingModelToggle').textContent='Show sample answer';$('speakingModelToggle').setAttribute('aria-expanded','false');
-      const saved=read()[current]||[];$('speakingRubric').replaceChildren(...rubric.map((r,i)=>{const label=document.createElement('label');const c=document.createElement('input');c.type='checkbox';c.checked=!!saved[i];const text=document.createElement('span');text.textContent=r;label.append(c,text);return label;}));
+      const saved=read()[current]||[];const rubric=m.contextType==='class'?classroomRubric:clinicalRubric;$('speakingRubric').replaceChildren(...rubric.map((r,i)=>{const label=document.createElement('label');const c=document.createElement('input');c.type='checkbox';c.checked=!!saved[i];const text=document.createElement('span');text.textContent=r;label.append(c,text);return label;}));
       $('speakingTimerStatus').textContent='Ready when you are.';$('speakingFeedback').textContent=saved.length?'Previous self-check restored.':'';
     }
     function read(){try{return JSON.parse(localStorage.getItem(key)||'{}')||{};}catch{return {};}}
@@ -356,9 +358,11 @@
     });
     $('speakingSave').addEventListener('click',()=>{
       const checks=[...$('speakingRubric').querySelectorAll('input')].map(x=>x.checked);
-      try{const all=read();all[current]=checks;localStorage.setItem(key,JSON.stringify(all));$('speakingFeedback').textContent='Saved on this device: '+checks.filter(Boolean).length+'/'+rubric.length+' communication goals.';}
+      try{const all=read();all[current]=checks;localStorage.setItem(key,JSON.stringify(all));$('speakingFeedback').textContent='Saved on this device: '+checks.filter(Boolean).length+'/'+checks.length+' speaking goals.';}
       catch{$('speakingFeedback').textContent='Your browser did not allow saving. You can still practise and self-check.';}
     });
+    document.addEventListener('click', e=>{const b=e.target.closest('[data-view]');if(b && b.dataset.view!=='speaking' && timer!==null){stop();$('speakingTimerStatus').textContent='Paused because you left Speaking.';}});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden&&timer!==null){stop();$('speakingTimerStatus').textContent='Paused while the tab was inactive.';}});
     updateOptions(0);
   })();
   </script>
