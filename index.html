@@ -234,15 +234,16 @@
 
 
     <section class="view" id="view-speaking" data-view-panel="speaking">
-      <div class="page-head"><div><p class="eyebrow">Speaking studio · A2 to B2</p><h2>Speak with confidence. Care with clarity.</h2><p>Practise realistic physiotherapy conversations, one step at a time. Work alone or with a partner.</p></div><span class="pill">6 clinical missions</span></div>
+      <div class="page-head"><div><p class="eyebrow">Speaking studio · A2 to B2</p><h2>Speak with confidence. Care with clarity.</h2><p>Practise speaking up in class and communicating with patients, from A2 to B2. Work alone, in pairs or in groups.</p></div><span class="pill">12 speaking missions</span></div>
       <div class="speaking-intro panel">
         <h3>🎙️ Your speaking workout</h3>
-        <p><strong>1.</strong> Choose a scenario. <strong>2.</strong> Read the situation and useful phrases. <strong>3.</strong> Speak for 60–120 seconds. <strong>4.</strong> Check the model and assess your communication.</p>
-        <p class="speaking-note">No microphone or account needed. Your speaking scores are self-assessments, not automatic pronunciation marks. Practise out loud; a partner can play the patient.</p>
+        <p><strong>1.</strong> Choose a speaking situation. <strong>2.</strong> Read the situation and useful phrases. <strong>3.</strong> Speak for 60–120 seconds. <strong>4.</strong> Check the model and assess your communication.</p>
+        <p class="speaking-note">No microphone or account needed. Your speaking scores are self-assessments, not automatic pronunciation marks. Practise out loud; a partner can play the patient or a classmate.</p>
       </div>
       <div class="speaking-controls toolbar">
+        <label for="speakingContextFilter">Speaking context <select id="speakingContextFilter"><option value="class">🙋 Speaking in class</option><option value="clinical">🩺 Speaking with patients</option><option value="all">All activities</option></select></label>
         <label for="speakingLevel">Choose your level <select id="speakingLevel"><option value="all">All levels</option><option value="A2">A2 · Getting started</option><option value="B1">B1 · Building confidence</option><option value="B2">B2 · Clinical reasoning</option></select></label>
-        <label for="speakingMission">Clinical situation <select id="speakingMission"></select></label>
+        <label for="speakingMission">Speaking activity <select id="speakingMission"></select></label>
         <button class="secondary" id="speakingNext">Next mission →</button>
       </div>
       <div class="speaking-layout">
@@ -301,13 +302,24 @@
       {level:'B2',title:'Respond to a worried patient',seconds:120,context:'A patient is anxious because progress after shoulder surgery seems slow.',role:'Listen empathetically, explain uncertainty and discuss appropriate follow-up.',tasks:['Acknowledge the patient’s concerns.','Explain why recovery can vary.','Avoid guarantees or an unsupported diagnosis.','Agree on sensible next steps and check understanding.'],phrases:['I can understand why that feels frustrating.','Recovery rates can vary.','Based on what we know so far…','We should review…','How does that plan sound to you?'],model:'I can understand why you are worried and frustrated. Recovery can vary from person to person, and we should not judge progress from one exercise alone. I would like to review how your shoulder is moving, your symptoms and your goals. If anything seems unusual or concerning, we can discuss this with your treating clinician. We will adjust the plan based on your response. How does that sound?'},
       {level:'B2',title:'Give a concise clinical handover',seconds:120,context:'You are handing over care of a patient with persistent knee pain to another clinician.',role:'Give a structured spoken handover using only the information below: three months of knee pain, stairs aggravate symptoms, reduced confidence, gentle strengthening started, reassessment planned.',tasks:['Introduce the reason for the handover.','Summarise relevant history and impact.','Explain intervention and response without inventing results.','State the next action and an uncertainty.'],phrases:['I am handing over the care of…','The patient reports…','So far, we have started…','Response to treatment is not yet established.','The next step is…'],model:'I am handing over a patient with a three-month history of knee pain. Stairs aggravate the symptoms, and the patient reports reduced confidence with everyday movement. Gentle strengthening has been started, but the response to treatment is not yet established. A reassessment is planned to review symptoms, function and the appropriate next steps.'}
     ];
-    const rubric=['I completed the clinical communication task.','I used clear, patient-friendly English.','I spoke in complete, connected sentences.','I checked understanding or communicated uncertainty appropriately.'];
+    const classroom=[
+      {level:'A2',title:'Ask for help or clarification',seconds:60,context:'During an English lesson, you have not understood an instruction or a new physiotherapy term.',role:'Politely interrupt, explain what is unclear and ask the teacher to clarify or repeat.',tasks:['Get the teacher’s attention politely.','Say exactly what you did not understand.','Ask for an example or repetition.'],phrases:['Excuse me, could you repeat that, please?','What does “range of motion” mean?','Could you give us an example?','Do you mean that…?'],model:'Excuse me, could you repeat the last instruction, please? I did not understand what range of motion means. Could you give us an example? Thank you, that is clearer now.'},
+      {level:'A2',title:'Answer a question in class',seconds:60,context:'Your teacher asks: “Why is communication important in physiotherapy?”',role:'Give a short structured answer with one reason and an example.',tasks:['Answer in one clear sentence.','Give a reason using because.','Add one concrete example.'],phrases:['I think it is important because…','For example…','It helps patients to…','In my opinion…'],model:'I think communication is important because patients need to understand their treatment. For example, a physiotherapist must explain how to do an exercise safely. Clear instructions help the patient feel confident.'},
+      {level:'B1',title:'Join a group discussion',seconds:90,context:'Your group is discussing this question: “Should physiotherapy patients use rehabilitation apps at home?”',role:'Share an opinion, react to a classmate and invite another student to speak.',tasks:['Give an opinion and a reason.','Agree or disagree respectfully with a classmate.','Invite a quieter classmate to contribute.'],phrases:['From my point of view…','I see your point, but…','I agree with you because…','What do you think, Alex?'],model:'From my point of view, rehabilitation apps can help patients remember their exercises. However, they cannot replace personalised advice. I see your point about motivation, but some patients may need extra support. What do you think about that?'},
+      {level:'B1',title:'Give a short class presentation',seconds:90,context:'You have been asked to give a mini-presentation about preventing falls in older adults.',role:'Organise your response with an opening, two main points and a conclusion.',tasks:['Introduce the topic.','Give two practical examples.','Use signposting language.','Finish with one key takeaway.'],phrases:['Today I’m going to talk about…','First,… Secondly,…','For instance…','To sum up…'],model:'Today I’m going to talk about fall prevention in older adults. First, physiotherapists can help improve balance through adapted exercises. Secondly, strength training can support everyday activities such as standing up from a chair. For instance, a simple programme may include sit-to-stand practice. To sum up, regular and suitable exercise can support confidence and mobility.'},
+      {level:'B2',title:'Disagree politely in a debate',seconds:120,context:'A classmate claims: “Online physiotherapy consultations are always as effective as face-to-face appointments.”',role:'Challenge the absolute claim without dismissing the speaker; qualify your argument and suggest a balanced view.',tasks:['Acknowledge an advantage of online consultations.','Question the word “always”.','Provide a reasoned counterargument.','Suggest when each format might be appropriate.'],phrases:['I take your point; however…','That may be true in some cases, but…','We should distinguish between…','It depends on…'],model:'I take your point that online consultations improve access for some patients. However, I would challenge the word always. Some assessments require physical examination or direct supervision, while follow-up conversations may work well remotely. The most appropriate format depends on the patient, the clinical question and the available resources.'},
+      {level:'B2',title:'Ask a thoughtful follow-up question',seconds:120,context:'A classmate has presented a study suggesting that exercise helps people with persistent low-back pain.',role:'Summarise the main claim, ask about the evidence and build on the response.',tasks:['Acknowledge a point from the presentation.','Ask a precise question about the study or limitations.','Explain why your question matters.','Follow up respectfully.'],phrases:['You mentioned that…','Could you clarify how…?','Was there a comparison group?','How might that affect the conclusions?'],model:'Thank you for your presentation. You mentioned that exercise improved outcomes for people with persistent low-back pain. Could you clarify what outcomes the researchers measured, and whether there was a comparison group? I ask because these details affect how confidently we can apply the findings to different patients.'}
+    ];
+    classroom.forEach(m=>m.contextType='class');
+    missions.forEach(m=>m.contextType='clinical');
+    missions.push(...classroom);
+    const rubric=['I completed the speaking task.','I used clear, patient-friendly English.','I spoke in complete, connected sentences.','I checked understanding or communicated uncertainty appropriately.'];
     const $=id=>document.getElementById(id);
     let current=0,remaining=60,timer=null;
     const key='physio-speaking-checks-v1';
     function stop(){if(timer!==null){clearInterval(timer);timer=null;} $('speakingStart').textContent='Start';}
     function clock(){const m=Math.floor(remaining/60),s=remaining%60;$('speakingClock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
-    function available(){return missions.map((m,i)=>({m,i})).filter(({m})=>$('speakingLevel').value==='all'||m.level===$('speakingLevel').value);}
+    function available(){return missions.map((m,i)=>({m,i})).filter(({m})=>($('speakingLevel').value==='all'||m.level===$('speakingLevel').value)&&($('speakingContextFilter').value==='all'||m.contextType===$('speakingContextFilter').value));}
     function updateOptions(preferred){
       const items=available();$('speakingMission').innerHTML=items.map(({m,i})=>'<option value="'+i+'">'+m.level+' · '+m.title+'</option>').join('');
       current=items.some(({i})=>i===preferred)?preferred:items[0].i;
@@ -315,7 +327,7 @@
     }
     function render(){
       stop();const m=missions[current];remaining=m.seconds;clock();
-      $('speakingMeta').textContent=m.level+' · '+m.seconds+'-second speaking challenge';
+      $('speakingMeta').textContent=(m.contextType==='class'?'Speaking in class':'Clinical communication')+' · '+m.level+' · '+m.seconds+'-second challenge';
       $('speakingTitle').textContent=m.title;$('speakingContext').textContent=m.context;$('speakingRole').textContent=m.role;
       $('speakingChecklist').replaceChildren(...m.tasks.map(t=>{const li=document.createElement('li');li.textContent=t;return li;}));
       $('speakingPhrases').replaceChildren(...m.phrases.map(t=>{const s=document.createElement('span');s.textContent=t;return s;}));
@@ -325,6 +337,7 @@
       $('speakingTimerStatus').textContent='Ready when you are.';$('speakingFeedback').textContent=saved.length?'Previous self-check restored.':'';
     }
     function read(){try{return JSON.parse(localStorage.getItem(key)||'{}')||{};}catch{return {};}}
+    $('speakingContextFilter').addEventListener('change',()=>updateOptions(current));
     $('speakingLevel').addEventListener('change',()=>updateOptions(current));
     $('speakingMission').addEventListener('change',e=>{current=Number(e.target.value);render();});
     $('speakingNext').addEventListener('click',()=>{const a=available();const pos=a.findIndex(x=>x.i===current);current=a[(pos+1)%a.length].i;$('speakingMission').value=String(current);render();});
