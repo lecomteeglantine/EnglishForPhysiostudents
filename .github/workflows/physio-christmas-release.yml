@@ -41,11 +41,53 @@ jobs:
           token: ${{ secrets.PHYSIO_CHRISTMAS_RELEASE_TOKEN }}
           path: private-source
           persist-credentials: false
+      - name: Prepare the audio release inputs privately
+        run: |
+          set -eu
+          cp private-source/sound-integration/public-template.html "$RUNNER_TEMP/calendar.html"
+          python3 - <<'PY'
+          import os, pathlib, zipfile
+          root = pathlib.Path("private-source/sound-integration")
+          files = sorted(root.glob("*.mp3"))
+          if len(files) != 16:
+              raise ValueError("Expected 16 source MP3s")
+          with zipfile.ZipFile(pathlib.Path(os.environ["RUNNER_TEMP"])/"calendar-audio.zip", "w") as z:
+              for p in files:
+                  z.write(p, "audio/" + p.name)
+          PY
       - name: Simulate all releases in memory without publishing
-        run: python3 public-site/tools/publish_physio_christmas.py --master private-source/Physio_Christmas_Demo_confidentielle.html --public public-site/physio-christmas/index.html --check-all
+        run: |
+          python3 private-source/sound-integration/publish_physio_christmas.py \
+            --master private-source/Physio_Christmas_Demo_confidentielle.html \
+            --public "$RUNNER_TEMP/calendar.html" \
+            --audio-config private-source/sound-integration/private-audio-config.json \
+            --audio-pack "$RUNNER_TEMP/calendar-audio.zip" \
+            --check-all
       - name: Publish eligible content only
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.publish)
-        run: python3 public-site/tools/publish_physio_christmas.py --master private-source/Physio_Christmas_Demo_confidentielle.html --public public-site/physio-christmas/index.html
+        run: |
+          set -eu
+          python3 private-source/sound-integration/publish_physio_christmas.py \
+            --master private-source/Physio_Christmas_Demo_confidentielle.html \
+            --public "$RUNNER_TEMP/calendar.html" \
+            --audio-config private-source/sound-integration/private-audio-config.json \
+            --audio-pack "$RUNNER_TEMP/calendar-audio.zip"
+          python3 - <<'PY'
+          import os, pathlib, runpy
+          load = runpy.run_path("private-source/sound-integration/publish_physio_christmas.py")["load"]
+          old_path = pathlib.Path("public-site/physio-christmas/index.html")
+          new_path = pathlib.Path(os.environ["RUNNER_TEMP"]) / "calendar.html"
+          old = load(old_path.read_text(encoding="utf-8"))
+          new_html = new_path.read_text(encoding="utf-8")
+          new = load(new_html)
+          if old.get("demo") is not False or new.get("demo") is not False:
+              raise ValueError("Public release cannot be a teacher preview")
+          if new["days"][:len(old["days"])] != old["days"]:
+              raise ValueError("Previously released days would change or disappear")
+          if len(new["days"]) < len(old["days"]):
+              raise ValueError("Refusing to remove a published day")
+          old_path.write_text(new_html, encoding="utf-8")
+          PY
       - name: Commit public calendar only
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.publish)
         working-directory: public-site
