@@ -1,0 +1,41 @@
+name: Physio Christmas daily release
+on:
+  schedule:
+    - cron: '17 23 30 11 *'
+    - cron: '17 */2 * 12 *'
+    - cron: '17 23 * 12 *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: physio-christmas-release
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Check publication credentials
+        env:
+          RELEASE_TOKEN: ${{ secrets.PHYSIO_CHRISTMAS_RELEASE_TOKEN }}
+        run: |
+          test -n "$RELEASE_TOKEN" || { echo "::error::Missing private release token"; exit 1; }
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PHYSIO_CHRISTMAS_RELEASE_TOKEN }}
+      - uses: actions/checkout@v4
+        with:
+          repository: lecomteeglantine/physio-christmas-private
+          token: ${{ secrets.PHYSIO_CHRISTMAS_RELEASE_TOKEN }}
+          path: private-source
+          persist-credentials: false
+      - name: Publish eligible content only
+        run: python3 tools/publish_physio_christmas.py --master private-source/Physio_Christmas_Demo_confidentielle.html --public physio-christmas/index.html
+      - name: Commit public calendar only
+        run: |
+          git config user.name "Physio Christmas release"
+          git config user.email "actions@users.noreply.github.com"
+          git add -- physio-christmas/index.html
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Publish eligible Christmas doors"
+          git push origin HEAD:main
