@@ -1,9 +1,10 @@
 name: Physio Christmas daily release
 on:
   schedule:
-    - cron: '17 23 30 11 *'
-    - cron: '17 23 1-23 12 *'
-    - cron: '17 */2 1-24 12 *'
+    # December in France: 05:00 UTC = 06:00 Europe/Paris.
+    - cron: '0 5 1-24 12 *'
+    # Retry in case of delayed or missed scheduled jobs.
+    - cron: '15,45 5-22 1-24 12 *'
   push:
     branches: [main]
     paths:
