@@ -54,15 +54,15 @@ const voiceProfiles=[
  {name:'Santa Claus',preferred:['George','Daniel','Ryan','Arthur'],rate:.83,pitch:.72,motion:'chuckle'},
  {name:'Mrs Claus',preferred:['Susan','Hazel','Sonia','Martha'],rate:.91,pitch:1.02,motion:'nod'},
  {name:'Rudolph',preferred:['Ryan','Oliver','Daniel'],rate:1.01,pitch:1.20,motion:'bounce'},
- {name:'Dexter the Elf',preferred:['Arthur','George','Daniel'],rate:1.03,pitch:.89,motion:'tilt'},
+ {name:'Grumble the Elf',preferred:['Arthur','George','Daniel'],rate:1.03,pitch:.89,motion:'tilt'},
  {name:'Dr Holly',preferred:['Sonia','Serena','Kate','Hazel'],rate:.95,pitch:1.11,motion:'settle'},
  {name:'Frosty',preferred:['Oliver','Ryan','George'],rate:.84,pitch:1.14,motion:'sway'},
  {name:'Ginger',preferred:['Oliver','Ryan','Martha'],rate:1.12,pitch:1.32,motion:'hop'},
  {name:'Inspector Snow',preferred:['Daniel','George','Arthur'],rate:.86,pitch:.83,motion:'inspect'}
 ];
 const narration={preferred:['Serena','Kate','Sonia','Daniel'],rate:.95,pitch:1,motion:'settle'};
-const speakerAliases={'Santa':0,'Santa Claus':0,'Mrs Claus':1,'Rudolph':2,'Dexter':3,'Dexter the Elf':3,'Dr Holly':4,'Frosty':5,'Ginger':6,'Inspector Snow':7};
-function splitDialogue(text){const out=[];const rx=/(Santa Claus|Mrs Claus|Inspector Snow|Dexter the Elf|Dr Holly|Rudolph|Dexter|Frosty|Ginger|Santa):\s*“([^”]+)”/g;let end=0;for(const m of String(text).matchAll(rx)){let lead=text.slice(end,m.index).trim();if(lead)out.push({speaker:null,text:lead});out.push({speaker:speakerAliases[m[1]],text:m[2]});end=m.index+m[0].length;}let tail=text.slice(end).trim();if(tail)out.push({speaker:null,text:tail});return out;}
+const speakerAliases={'Santa':0,'Santa Claus':0,'Mrs Claus':1,'Rudolph':2,'Grumble':3,'Grumble the Elf':3,'Dr Holly':4,'Frosty':5,'Ginger':6,'Inspector Snow':7};
+function splitDialogue(text){const out=[];const rx=/(Santa Claus|Mrs Claus|Inspector Snow|Grumble the Elf|Dr Holly|Rudolph|Grumble|Frosty|Ginger|Santa):\s*“([^”]+)”/g;let end=0;for(const m of String(text).matchAll(rx)){let lead=text.slice(end,m.index).trim();if(lead)out.push({speaker:null,text:lead});out.push({speaker:speakerAliases[m[1]],text:m[2]});end=m.index+m[0].length;}let tail=text.slice(end).trim();if(tail)out.push({speaker:null,text:tail});return out;}
 function pickVoice(profile,available){const uk=available.filter(v=>/^en[-_]GB$/i.test(v.lang));const english=available.filter(v=>/^en(?:[-_]|$)/i.test(v.lang));const pool=uk.length?uk:english;for(const pref of profile.preferred){const hit=pool.find(v=>v.name.toLowerCase().includes(pref.toLowerCase()));if(hit)return hit;}return pool[0]||null;}
 let speakingToken=0, restorePortrait=null;
 function cancelSpeech(){speakingToken++;if('speechSynthesis'in window)window.speechSynthesis.cancel();if(restorePortrait){restorePortrait();restorePortrait=null;}document.querySelectorAll('.portrait-speaking').forEach(n=>n.classList.remove('portrait-speaking'));}
