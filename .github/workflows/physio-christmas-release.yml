@@ -28,8 +28,10 @@ jobs:
       - name: Check publication credentials
         env:
           RELEASE_TOKEN: ${{ secrets.PHYSIO_CHRISTMAS_RELEASE_TOKEN }}
+          PRIVATE_READ_TOKEN: ${{ secrets.PHYSIO_CHRISTMAS_PRIVATE_READ_TOKEN }}
         run: |
-          test -n "$RELEASE_TOKEN" || { echo "::error::Missing private release token"; exit 1; }
+          test -n "$RELEASE_TOKEN" || { echo "::error::Missing public release token"; exit 1; }
+          test -n "$PRIVATE_READ_TOKEN" || { echo "::error::Missing PHYSIO_CHRISTMAS_PRIVATE_READ_TOKEN (read-only access to the private calendar)"; exit 1; }
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PHYSIO_CHRISTMAS_RELEASE_TOKEN }}
@@ -38,7 +40,7 @@ jobs:
         with:
           repository: lecomteeglantine/physio-christmas-private
           ref: main
-          token: ${{ secrets.PHYSIO_CHRISTMAS_RELEASE_TOKEN }}
+          token: ${{ secrets.PHYSIO_CHRISTMAS_PRIVATE_READ_TOKEN }}
           path: private-source
           persist-credentials: false
       - name: Simulate all releases in memory without publishing
