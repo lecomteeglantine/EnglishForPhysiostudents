@@ -12,6 +12,13 @@ PAYLOAD = re.compile(r'(<script\s+id="payload"\s+type="application/json">)(.*?)(
 ACCUSATION = re.compile(r'function accuse\(\)\{.*?(?=function render\()', re.S)
 START = dt.date(2026, 12, 1)
 
+
+def release_date(now):
+    # A door becomes eligible at 06:00 Paris time, never before.
+    local = now.astimezone(ZoneInfo('Europe/Paris'))
+    return (local - dt.timedelta(hours=6)).date()
+
+
 def load(html):
     matches = list(PAYLOAD.finditer(html))
     if len(matches) != 1:
@@ -75,6 +82,13 @@ def main():
     template = a.public.read_text(encoding="utf-8")
     master = a.master.read_text(encoding="utf-8")
     if a.check_all:
+        for offset in range(26):
+            day = START + dt.timedelta(days=offset-1)
+            before = dt.datetime.combine(day, dt.time(5, 59, 59), ZoneInfo("Europe/Paris"))
+            after = before + dt.timedelta(seconds=1)
+            if release_date(before.astimezone(dt.timezone.utc)) != day - dt.timedelta(days=1) or release_date(after.astimezone(dt.timezone.utc)) != day:
+                raise ValueError("06:00 Paris release boundary failed")
+        print("PASS: 26 daily 06:00 Paris release boundaries")
         source = load(master)
         if len(source["assets"]) != 30 or set(source["assets"]) != set(source["captions"]):
             raise ValueError("Expected 30 matching image/caption records")
@@ -129,7 +143,7 @@ def main():
             raise ValueError("Final release is missing illustrations")
         print("PASS: 26 dates; cumulative days, 30 WebP images, future-content checks, idempotence")
         return
-    today = dt.datetime.now(ZoneInfo("Europe/Paris")).date()
+    today = release_date(dt.datetime.now(dt.timezone.utc))
     result = release(template, master, today)
     if result != template:
         a.public.write_text(result, encoding="utf-8")
