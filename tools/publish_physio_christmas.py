@@ -16,7 +16,21 @@ def load(html):
     matches = list(PAYLOAD.finditer(html))
     if len(matches) != 1:
         raise ValueError("Expected exactly one payload")
-    return json.loads(matches[0].group(2))
+    data = json.loads(matches[0].group(2))
+    # Keep the archival master intact; normalise the approved character name
+    # before any dated release or confidential beta is generated.
+    if data.get("demo") is True:
+        def rename(value):
+            if isinstance(value, str):
+                return re.sub(r"\bDexter\b", "Grumble", value)
+            if isinstance(value, list):
+                return [rename(item) for item in value]
+            if isinstance(value, dict):
+                return {key: rename(item) for key, item in value.items()}
+            return value
+        data = {key: value if key == "assets" else rename(value)
+                for key, value in data.items()}
+    return data
 
 def release(template, master, today):
     source = load(master)
